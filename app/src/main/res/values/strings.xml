@@ -5,7 +5,6 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <!-- menu drawer -->
     <string name="menu_home">Home</string>
@@ -15,11 +14,13 @@
     <string name="menu_logout">Logout</string>
 
     <!-- smart energy - manual -->
-    <string name="mode_manual_title">Manual</string>
+    <string name="manual_title">Manual</string>
     <string name="btn_cw_title">Clockwise</string>
     <string name="btn_ccw_title">Counter Clockwise</string>
 
-    <string name="mode_auto_title">Otomatis</string>
+    <!-- smart energy - auto -->
+    <string name="auto_title">Otomatis</string>
+
     <string name="servo_angle_title">Sudut Servo:</string>
     <string name="solar_current_title">Arus Panel Surya</string>
     <string name="solar_voltage_title">Tegangan Panel Surya</string>
@@ -27,15 +28,11 @@
     <string name="zero_voltage">0 Volt</string>
     <string name="zero_current">0 A</string>
 
+    <!-- Smart Light -->
+    <string name="light_off_title">The light is OFF</string>
+    <string name="light_on_title">The light is ON</string>
+
     <!-- Login -->
     <string name="title_activity_login">Login</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
 
 </resources>

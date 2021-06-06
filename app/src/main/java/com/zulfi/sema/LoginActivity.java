@@ -13,4 +13,10 @@ public class LoginActivity extends AppCompatActivity {
 
         setTitle(R.string.title_activity_login);
     }
+
+    @Override
+    public void onBackPressed() {
+        // untuk disable button back
+        return;
+    }
 }

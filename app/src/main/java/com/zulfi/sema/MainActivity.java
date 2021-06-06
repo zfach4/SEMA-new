@@ -180,7 +180,4 @@ public class MainActivity extends AppCompatActivity {
 
         content = contentId;
     }
-
-
-
 }
