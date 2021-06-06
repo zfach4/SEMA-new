@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.zulfi.sema.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_smart_energy"
+        android:name="com.zulfi.sema.ui.smart_energy.SmartEnergyFragment"
+        android:label="@string/menu_smart_energy"
+        tools:layout="@layout/fragment_smart_energy" />
+
+    <fragment
+        android:id="@+id/nav_smart_light"
+        android:name="com.zulfi.sema.ui.smart_light.SmartLightFragment"
+        android:label="@string/menu_smart_light"
+        tools:layout="@layout/fragment_smart_light" />
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.zulfi.sema.ui.about.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about" />
+
+</navigation>
