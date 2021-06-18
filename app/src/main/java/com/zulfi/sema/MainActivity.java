@@ -14,6 +14,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
 
+    private TextView tvUsername;
+    private String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
         setupActionBar();
 
         drawer = findViewById(R.id.drawer_layout);
+        tvUsername = findViewById(R.id.tv_name);
+
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+
+//        tidak mau di set
+//        tvUsername.setText("aaa");
 
         toggle = setupDrawerToggle();
         toggle.setDrawerIndicatorEnabled(true);
