@@ -9,15 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SEMA">
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".MainActivity"
-            android:theme="@style/Theme.SEMA.NoActionBar">
-
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.SEMA.NoActionBar">
+
+
         </activity>
     </application>
 
