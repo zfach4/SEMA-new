@@ -14,6 +14,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -54,12 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         drawer = findViewById(R.id.drawer_layout);
         tvUsername = findViewById(R.id.tv_name);
-
-        Intent intent = getIntent();
-        username = intent.getStringExtra("username");
-
-//        tidak mau di set
-//        tvUsername.setText("aaa");
 
         toggle = setupDrawerToggle();
         toggle.setDrawerIndicatorEnabled(true);
@@ -135,6 +130,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView tvName = (TextView) headerView.findViewById(R.id.tv_name);
+        tvName.setText(username);
+
         // untuk handle drawer click event
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
