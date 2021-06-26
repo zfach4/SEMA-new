@@ -35,4 +35,9 @@
     <!-- Login -->
     <string name="title_activity_login">Login</string>
 
+    <!--  buat preference key  -->
+    <string name="pref_is_login_key">pref_is_login</string>
+    <string name="pref_user_fullname_key">pref_user_full_name</string>
+    <string name="pref_user_email_key">pref_user_email_name</string>
+    <string name="pref_user_image_url">pref_user_img_url</string>
 </resources>
