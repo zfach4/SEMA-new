@@ -5,10 +5,17 @@
     android:padding="16dp"
     android:orientation="vertical">
 
+    <include
+        layout="@layout/pie_chart"
+        android:id="@+id/chart_battery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp">
 
         <TextView
