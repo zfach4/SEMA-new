@@ -3,7 +3,9 @@ package com.zulfi.sema;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,12 +45,42 @@ public class LoginActivity extends AppCompatActivity {
 
                 username = et_username.getText().toString();
                 password = et_password.getText().toString();
+
+                // kalau berhasil login, panggil ini:
+                saveUserLoginInfo(username);
+
                 // action
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("username", username);
-                intent.putExtra("password", password);
                 startActivity(intent);
+
+                finish();
             }
         });
+    }
+
+    private void saveUserLoginInfo(String username) {
+        // save ke SharedPreferences (berhasil login)
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        // isLogin = true
+        mPreferences
+                .edit()
+                .putBoolean(getString(R.string.pref_is_login_key), true)
+                .apply();
+        // save nama
+        mPreferences
+                .edit()
+                .putString(getString(R.string.pref_user_fullname_key), username)
+                .apply();
+        // save image url untuk user's profile photo
+        mPreferences
+                .edit()
+                .putString(getString(R.string.pref_user_image_url), "@drawable/cute.png")
+                .apply();
+        // save email
+        String email = username.replaceAll("\\s", "").toLowerCase() + "@gmail.com";
+        mPreferences
+                .edit()
+                .putString(getString(R.string.pref_user_email_key), email)
+                .apply();
     }
 }
