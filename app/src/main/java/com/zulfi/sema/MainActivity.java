@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -27,6 +28,8 @@ import com.zulfi.sema.about.AboutFragment;
 import com.zulfi.sema.home.HomeFragment;
 import com.zulfi.sema.smart_energy.SmartEnergyFragment;
 import com.zulfi.sema.smart_light.SmartLightFragment;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -130,12 +133,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-        Intent intent = getIntent();
-        username = intent.getStringExtra("username");
+        // set user profile
+        String imgUrl = mPreferences.getString(getString(R.string.pref_user_image_url), "cute.png");
+        String username = mPreferences.getString(getString(R.string.pref_user_fullname_key), "Zulfi Fachrurrozi");
+        String email = mPreferences.getString(getString(R.string.pref_user_email_key), "zulfi.abc@gmail.com");
 
         View headerView = navigationView.getHeaderView(0);
+        ImageView imageView = (ImageView) headerView.findViewById(R.id.img_profile_photo);
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.cute));
+
         TextView tvName = (TextView) headerView.findViewById(R.id.tv_name);
         tvName.setText(username);
+
+        TextView tvEmail = (TextView) headerView.findViewById(R.id.tv_email);
+        tvEmail.setText(email);
 
         // untuk handle drawer click event
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -175,8 +186,10 @@ public class MainActivity extends AppCompatActivity {
                 setTitle(R.string.menu_about);
                 break;
             case R.id.nav_logout:
+                logoutUser();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             default:
                 break;
@@ -192,5 +205,30 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
 
         content = contentId;
+    }
+
+    private void logoutUser() {
+        // hapus data-data user dan status login jadi false
+
+        // set isLogin = false
+        mPreferences
+                .edit()
+                .putBoolean(getString(R.string.pref_is_login_key), false)
+                .apply();
+        // hapus user's fullname
+        mPreferences
+                .edit()
+                .remove(getString(R.string.pref_user_fullname_key))
+                .apply();
+        // hapus user's profile photo
+        mPreferences
+                .edit()
+                .remove(getString(R.string.pref_user_image_url))
+                .apply();
+        // hapus user's email
+        mPreferences
+                .edit()
+                .remove(getString(R.string.pref_user_email_key))
+                .apply();
     }
 }
