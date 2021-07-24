@@ -22,4 +22,28 @@
     <style name="Theme.SEMA.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.SEMA.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TextSpec">
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TextSpec.Field">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:textColor">@color/colorSubtitle</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextSpec.Value">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:gravity">end</item>
+    </style>
+    <style name="TextSpec.Unit">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+<!--        <item name="android:layout_weight">1</item>-->
+        <item name="android:gravity">start</item>
+    </style>
 </resources>

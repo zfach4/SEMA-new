@@ -9,70 +9,109 @@
         layout="@layout/pie_chart"
         android:id="@+id/chart_battery"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp">
-
-        <TextView
-            android:text="@string/accu_voltage_title"
-            android:textSize="12sp"
-            android:textStyle="bold"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp">
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <TextView
+                style="@style/TextSpec.Field"
+                android:text="@string/accu_voltage_title" />
 
-        <TextView
-            android:id="@+id/tv_accu_voltage"
-            android:text="@string/zero_voltage"
-            android:textSize="14sp"
+            <TextView
+                style="@style/TextSpec.Value"
+                android:id="@+id/tv_accu_voltage"
+                android:text="@string/zero"/>
+
+            <TextView
+                style="@style/TextSpec.Value"
+                android:layout_width="wrap_content"
+                android:gravity="start"
+                android:text="@string/current" />
+        </TableRow>
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <TextView
+                style="@style/TextSpec.Field"
+                android:text="@string/solar_voltage_title" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="8dp">
+            <TextView
+                style="@style/TextSpec.Value"
+                android:id="@+id/tv_solar_voltage"
+                android:text="@string/zero" />
 
-        <TextView
-            android:text="@string/solar_voltage_title"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            <TextView
+                style="@style/TextSpec.Value"
+                android:text="@string/voltage"
+                android:gravity="start" />
+        </TableRow>
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <TextView
+                style="@style/TextSpec.Field"
+                android:text="@string/solar_current_title" />
 
-        <TextView
-            android:id="@+id/tv_solar_voltage"
-            android:text="@string/zero_voltage"
-            android:textSize="14sp"
+            <TextView
+                android:id="@+id/tv_solar_current"
+                android:text="@string/zero"
+                style="@style/TextSpec.Value"/>
+
+            <TextView
+                style="@style/TextSpec.Value"
+                android:text="@string/voltage"
+                android:gravity="start"/>
+        </TableRow>
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+            <TextView
+                style="@style/TextSpec.Field"
+                android:text="@string/azimuth" />
 
-        <TextView
-            android:text="@string/solar_current_title"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            <TextView
+                style="@style/TextSpec.Value"
+                android:id="@+id/tv_azimuth"
+                android:text="@string/zero" />
+
+            <TextView
+                style="@style/TextSpec.Value"
+                android:text=""
+                android:gravity="start" />
+        </TableRow>
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <TextView
+                style="@style/TextSpec.Field"
+                android:text="@string/sudut_servo" />
 
-        <TextView
-            android:id="@+id/tv_solar_current"
-            android:text="@string/zero_current"
-            android:textSize="14sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            <TextView
+                style="@style/TextSpec.Value"
+                android:id="@+id/tv_servo"
+                android:text="@string/zero" />
+
+            <TextView
+                style="@style/TextSpec.Value"
+                android:text=""
+                android:gravity="start" />
+        </TableRow>
+
+    </TableLayout>
 
 <!--    <TableRow-->
 <!--            android:layout_width="match_parent"-->
