@@ -23,6 +23,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.material.navigation.NavigationView;
 import com.zulfi.sema.about.AboutFragment;
 import com.zulfi.sema.home.HomeFragment;
@@ -44,26 +48,43 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvUsername;
     private String username;
 
+    private Firebase mRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //menyimpan kondisi logout
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
+
         Toolbar toolbar = findViewById(R.id.toolbar_main);
+        //membuat toolbar bisa menjadi activity window (bisa dikasih menu, dipencet, dll)
         setSupportActionBar(toolbar);
 
+        //setting tampilan toolbar
         setupActionBar();
 
+        //firebase inisialisasi
+//        mRef = new Firebase("https://smartcity-gbaz-ae18-default-rtdb.firebaseio.com/SmartCityAE18/Servo");
+
+        // menu layout navigasi : muncul ketika burger icon ditekan
         drawer = findViewById(R.id.drawer_layout);
+
         tvUsername = findViewById(R.id.tv_name);
 
+        //membuat komponen menu list ditampilkan ketika burger icon ditekan
         toggle = setupDrawerToggle();
+
+        //jika true -> menampilkan burger icon, jika false -> back icon
         toggle.setDrawerIndicatorEnabled(true);
+        //drawer menjadikan toggle sebagai listener (komponen yang akan bereaksi)
         drawer.addDrawerListener(toggle);
 
+        //menu yang menampilkan list pada drawer : home, smart energy, dll
         NavigationView navigationView = findViewById(R.id.nav_view);
+        //mengisi profil username dll serta aksi ketika menuItem dipilih
         setupDrawerContent(navigationView);
 
         if (savedInstanceState == null) {
@@ -120,8 +141,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupActionBar() {
         ActionBar actionbar = getSupportActionBar();
+        //menampilkan burger icon (memberikan tempat untuk suatu icon muncul : default back icon)
         actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeButtonEnabled(true);
+//        actionbar.setHomeButtonEnabled(true);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -148,8 +170,9 @@ public class MainActivity extends AppCompatActivity {
         TextView tvEmail = (TextView) headerView.findViewById(R.id.tv_email);
         tvEmail.setText(email);
 
-        // untuk handle drawer click event
+        // membuat listener untuk menu list (home, smart energy, dll)
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            //menentukan aksi yang akan dilakukan ketika salah satu menu item dipilih / ditekan
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 selectDrawerItem(menuItem);
@@ -159,7 +182,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
+        // melakukan aksi sesuai dengan menu item yang dipilih (menampilkan fragmen tertentu atau logout)
         setContentMain(menuItem.getItemId());
+        // menandai bahwa menu telah dipilih dicodingan (bukan pa UI)
         menuItem.setChecked(true);
         drawer.closeDrawers();
     }
@@ -231,4 +256,20 @@ public class MainActivity extends AppCompatActivity {
                 .remove(getString(R.string.pref_user_email_key))
                 .apply();
     }
+
+//    private void loadFirebase() {
+//        mRef.addValueEventListener(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                nilai = dataSnapshot.getValue(String.class);
+//                tvString.setText(nilai);
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//
+//            }
+//        });
+//    }
 }

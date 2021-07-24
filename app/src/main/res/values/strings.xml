@@ -25,8 +25,9 @@
     <string name="solar_current_title">Arus Panel Surya</string>
     <string name="solar_voltage_title">Tegangan Panel Surya</string>
     <string name="accu_voltage_title">Tegangan Accu</string>
-    <string name="zero_voltage">0 Volt</string>
-    <string name="zero_current">0 A</string>
+    <string name="zero">0</string>
+    <string name="voltage">Volt</string>
+    <string name="current">Ampere</string>
 
     <!-- Smart Light -->
     <string name="light_off_title">The light is OFF</string>
@@ -40,4 +41,6 @@
     <string name="pref_user_fullname_key">pref_user_full_name</string>
     <string name="pref_user_email_key">pref_user_email_name</string>
     <string name="pref_user_image_url">pref_user_img_url</string>
+    <string name="sudut_servo">Sudut Servo</string>
+    <string name="azimuth">Azimuth</string>
 </resources>

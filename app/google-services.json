@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "613384598713",
+    "firebase_url": "https://smartcity-gbaz-ae18-default-rtdb.firebaseio.com",
+    "project_id": "smartcity-gbaz-ae18",
+    "storage_bucket": "smartcity-gbaz-ae18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613384598713:android:c89bad5133cdba606f9768",
+        "android_client_info": {
+          "package_name": "com.zulfi.sema"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613384598713-m2k5hl58rpqhvn0p1fqgt229u586a8gp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzpcHGowUke4qNB-XHvG3SDaAu9pO3xno"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613384598713-m2k5hl58rpqhvn0p1fqgt229u586a8gp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
