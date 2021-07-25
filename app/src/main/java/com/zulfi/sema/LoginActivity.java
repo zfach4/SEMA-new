@@ -158,17 +158,6 @@ public class LoginActivity extends AppCompatActivity {
                 Log.w("Zulfi Firebase", "Failed to read value", error.toException());
             }
         });
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String nilai = dataSnapshot.getValue(String.class);
-////                tv_servo.setText(nilai);
-//                Log.d("Zulfi Firebase", "Value is " + nilai);
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//
-//            }
 
     }
 }
