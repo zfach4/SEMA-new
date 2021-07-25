@@ -35,7 +35,7 @@
                 style="@style/TextSpec.Value"
                 android:layout_width="wrap_content"
                 android:gravity="start"
-                android:text="@string/current" />
+                android:text="@string/voltage" />
         </TableRow>
         <TableRow
             android:layout_width="match_parent"
@@ -70,7 +70,7 @@
 
             <TextView
                 style="@style/TextSpec.Value"
-                android:text="@string/voltage"
+                android:text="@string/current"
                 android:gravity="start"/>
         </TableRow>
         <TableRow

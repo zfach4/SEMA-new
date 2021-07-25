@@ -1,5 +1,6 @@
 package com.zulfi.sema.smart_energy;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -12,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -34,6 +34,8 @@ public class SmartEnergyFragment extends Fragment {
     private TextView tvAccuVoltage;
     private TextView tvSolarPanelVoltage;
     private TextView tvSolarPanelCurrent;
+    private TextView tvAzimuth;
+    private TextView tvSudutServoAutoContent;
 
     // manual content
     private TextView tvServoAngle;
@@ -58,6 +60,10 @@ public class SmartEnergyFragment extends Fragment {
         tvAccuVoltage = autoContentView.findViewById(R.id.tv_accu_voltage);
         tvSolarPanelVoltage = autoContentView.findViewById(R.id.tv_solar_voltage);
         tvSolarPanelCurrent = autoContentView.findViewById(R.id.tv_solar_current);
+        // azimuth
+        tvAzimuth = autoContentView.findViewById(R.id.tv_azimuth);
+        // sudut servo (tulisan kecil, paling bawah)
+        tvSudutServoAutoContent = autoContentView.findViewById(R.id.tv_servo);
 
         // manual content
         manualContentView = view.findViewById(R.id.content_manual);
@@ -89,7 +95,9 @@ public class SmartEnergyFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(SmartEnergyViewModel.class);
-        // TODO: Use the ViewModel
+
+        // get data2 dari ViewModel
+        loadDataFromFirebase();
     }
 
     private void setContentMode(Boolean isChecked) {
@@ -99,24 +107,17 @@ public class SmartEnergyFragment extends Fragment {
             autoContentView.setVisibility(View.GONE);
             manualContentView.setVisibility(View.VISIBLE);
 
-            // harusnya ngambil data dari server
-            servoAngle = 177;
-            tvServoAngle.setText(servoAngle + "");
         } else { // otomatis
             tvMode.setText(R.string.auto_title);
             autoContentView.setVisibility(View.VISIBLE);
             manualContentView.setVisibility(View.GONE);
 
             // battery percentage in pie chart
+            // data bohongan
             // harusnya ngambil data dari server
             int batteryPercentage = 55;
             chartBatteryPercentage.setProgress(batteryPercentage);
             tvBatteryPercentage.setText(batteryPercentage + "%");
-
-            // angka-angka
-            tvAccuVoltage.setText(12 + "Volt");
-            tvSolarPanelVoltage.setText(25 + "Volt");
-            tvSolarPanelCurrent.setText(7.5 + "A");
         }
     }
 
@@ -135,4 +136,55 @@ public class SmartEnergyFragment extends Fragment {
         tvServoAngle.setText(servoAngle + "");
     }
 
+    // load data dari viewmodel
+    private void loadDataFromFirebase() {
+        // mode
+        mViewModel.getMode().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                switchMode.setChecked(aBoolean);
+                setContentMode(aBoolean);
+            }
+        });
+
+        // tegangan accu
+        mViewModel.getVAki().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                tvAccuVoltage.setText(s);
+            }
+        });
+
+        // tegangan panel surya
+        mViewModel.getVPanel().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                tvSolarPanelVoltage.setText(s);
+            }
+        });
+
+        // arus panel surya
+        mViewModel.getAPanel().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                tvSolarPanelCurrent.setText(s);
+            }
+        });
+
+        // azimuth
+        mViewModel.getAzimuth().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                tvAzimuth.setText(s);
+            }
+        });
+
+        mViewModel.getPosisiServo().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                tvServoAngle.setText(s);
+                tvSudutServoAutoContent.setText(s);
+            }
+        });
+    }
 }
