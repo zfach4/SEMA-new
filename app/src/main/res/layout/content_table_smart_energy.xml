@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="16dp">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            style="@style/TextSpec.Field"
+            android:text="@string/accu_voltage_title" />
+
+        <TextView
+            android:id="@+id/tv_accu_voltage"
+            style="@style/TextSpec.Value"
+            android:text="@string/zero" />
+
+        <TextView
+            style="@style/TextSpec.Unit"
+            android:gravity="start"
+            android:text="@string/voltage" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            style="@style/TextSpec.Field"
+            android:text="@string/solar_voltage_title" />
+
+        <TextView
+            android:id="@+id/tv_solar_voltage"
+            style="@style/TextSpec.Value"
+            android:text="@string/zero" />
+
+        <TextView
+            style="@style/TextSpec.Unit"
+            android:gravity="start"
+            android:text="@string/voltage" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            style="@style/TextSpec.Field"
+            android:text="@string/solar_current_title" />
+
+        <TextView
+            android:id="@+id/tv_solar_current"
+            style="@style/TextSpec.Value"
+            android:text="@string/zero" />
+
+        <TextView
+            style="@style/TextSpec.Unit"
+            android:gravity="start"
+            android:text="@string/current" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            style="@style/TextSpec.Field"
+            android:text="@string/azimuth" />
+
+        <TextView
+            android:id="@+id/tv_azimuth"
+            style="@style/TextSpec.Value"
+            android:text="@string/zero" />
+
+        <TextView
+            style="@style/TextSpec.Unit"
+            android:gravity="start"
+            android:text="" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/row_sudut_servo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/TextSpec.Field"
+            android:text="@string/sudut_servo" />
+
+        <TextView
+            android:id="@+id/tv_servo"
+            style="@style/TextSpec.Value"
+            android:text="@string/zero" />
+
+        <TextView
+            style="@style/TextSpec.Unit"
+            android:gravity="start"
+            android:text="" />
+    </TableRow>
+</TableLayout>
