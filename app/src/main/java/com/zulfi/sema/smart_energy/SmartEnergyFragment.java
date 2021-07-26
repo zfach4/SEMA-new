@@ -9,14 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.zulfi.sema.R;
 
 public class SmartEnergyFragment extends Fragment {
@@ -31,15 +36,20 @@ public class SmartEnergyFragment extends Fragment {
     // auto content
     private ProgressBar chartBatteryPercentage;
     private TextView tvBatteryPercentage;
+
+    // manual content
+    private TextView tvServoAngle;
+    private int servoAngle = 0;
+
+    // table content
     private TextView tvAccuVoltage;
     private TextView tvSolarPanelVoltage;
     private TextView tvSolarPanelCurrent;
     private TextView tvAzimuth;
-    private TextView tvSudutServoAutoContent;
 
-    // manual content
-    private TextView tvServoAngle;
-    private int servoAngle = 177;
+    private TableRow rowSudutServo;
+    private TextView tvSudutServoTable;
+
 
     public static SmartEnergyFragment newInstance() {
         return new SmartEnergyFragment();
@@ -57,13 +67,15 @@ public class SmartEnergyFragment extends Fragment {
         chartBatteryPercentage = pieContentView.findViewById(R.id.stats_progressbar);
         tvBatteryPercentage = pieContentView.findViewById(R.id.tv_battery_percentage);
         // accu and solar panel measure
-        tvAccuVoltage = autoContentView.findViewById(R.id.tv_accu_voltage);
-        tvSolarPanelVoltage = autoContentView.findViewById(R.id.tv_solar_voltage);
-        tvSolarPanelCurrent = autoContentView.findViewById(R.id.tv_solar_current);
+        View tableContentView = view.findViewById(R.id.contont_table);
+        tvAccuVoltage = tableContentView.findViewById(R.id.tv_accu_voltage);
+        tvSolarPanelVoltage = tableContentView.findViewById(R.id.tv_solar_voltage);
+        tvSolarPanelCurrent = tableContentView.findViewById(R.id.tv_solar_current);
         // azimuth
-        tvAzimuth = autoContentView.findViewById(R.id.tv_azimuth);
+        tvAzimuth = tableContentView.findViewById(R.id.tv_azimuth);
         // sudut servo (tulisan kecil, paling bawah)
-        tvSudutServoAutoContent = autoContentView.findViewById(R.id.tv_servo);
+        rowSudutServo = tableContentView.findViewById(R.id.row_sudut_servo);
+        tvSudutServoTable = tableContentView.findViewById(R.id.tv_servo);
 
         // manual content
         manualContentView = view.findViewById(R.id.content_manual);
@@ -82,7 +94,25 @@ public class SmartEnergyFragment extends Fragment {
 
         tvMode = view.findViewById(R.id.tv_mode_state);
         switchMode = view.findViewById(R.id.switch_mode);
-        switchMode.setOnCheckedChangeListener((buttonView, isChecked) -> setContentMode(isChecked));
+        switchMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d("Zulfi Fachrurrozi", "mode sekarang : " + isChecked );
+                mViewModel.updateMode(isChecked).addOnSuccessListener(
+                        new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getActivity(), "Berhasil Mengubah Mode", Toast.LENGTH_SHORT).show();
+                                Log.d("Update Mode", "Berhasil update mode ke " + isChecked);
+                            }
+                        }
+                ).addOnFailureListener(er->{
+                    Toast.makeText(getActivity(), ""+er.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d("Update Mode", "Gagal update mode ke " + isChecked);
+                    switchMode.setChecked(!isChecked);
+                });
+            }
+        });
 
         // set initial state
         // harusnya ngambil data dari server
@@ -106,18 +136,13 @@ public class SmartEnergyFragment extends Fragment {
             tvMode.setText(R.string.manual_title);
             autoContentView.setVisibility(View.GONE);
             manualContentView.setVisibility(View.VISIBLE);
+            rowSudutServo.setVisibility(View.GONE);
 
         } else { // otomatis
             tvMode.setText(R.string.auto_title);
             autoContentView.setVisibility(View.VISIBLE);
             manualContentView.setVisibility(View.GONE);
-
-            // battery percentage in pie chart
-            // data bohongan
-            // harusnya ngambil data dari server
-            int batteryPercentage = 55;
-            chartBatteryPercentage.setProgress(batteryPercentage);
-            tvBatteryPercentage.setText(batteryPercentage + "%");
+            rowSudutServo.setVisibility(View.VISIBLE);
         }
     }
 
@@ -152,6 +177,9 @@ public class SmartEnergyFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 tvAccuVoltage.setText(s);
+                int batteryPercentage = (int) Math.round((Double.parseDouble(s) * 100) / 12);
+                chartBatteryPercentage.setProgress(batteryPercentage);
+                tvBatteryPercentage.setText(batteryPercentage + "%");
             }
         });
 
@@ -182,8 +210,9 @@ public class SmartEnergyFragment extends Fragment {
         mViewModel.getPosisiServo().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                servoAngle = Integer.parseInt(s);
                 tvServoAngle.setText(s);
-                tvSudutServoAutoContent.setText(s);
+                tvSudutServoTable.setText(s);
             }
         });
     }

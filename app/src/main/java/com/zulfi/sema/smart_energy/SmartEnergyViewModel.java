@@ -6,11 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class SmartEnergyViewModel extends ViewModel {
 
@@ -29,6 +32,7 @@ public class SmartEnergyViewModel extends ViewModel {
     private DatabaseReference azimuthRef;
     private DatabaseReference posisiServoRef;
     private DatabaseReference modeRef;
+    private DatabaseReference smartCityRef;
 
     // listener
     private ValueEventListener vAkiListener;
@@ -48,12 +52,13 @@ public class SmartEnergyViewModel extends ViewModel {
         azimuthRef = sensorRef.child("Azimuth");
         posisiServoRef = sensorRef.child("PosisiServo");
         // SmartCityAE18
-        DatabaseReference smartCityRef = FirebaseDatabase.getInstance().getReference("SmartCityAE18");
+        smartCityRef = FirebaseDatabase.getInstance().getReference("SmartCityAE18");
         // SmartCityAE18 children: Mode
         modeRef = smartCityRef.child("Mode");
     }
 
     // yang harus dilakukan ketika class ini akan dihapus
+    // untuk bersih-bersih agar sebagian proses yang tidak dipakai tidak membebani aplikasi
     @Override
     protected void onCleared() {
         // hapus listener bila sudah di-create
@@ -209,7 +214,6 @@ public class SmartEnergyViewModel extends ViewModel {
                     String nilaiMode = snapshot.getValue(String.class);
                     // perikasi nilaiMode untuk menyesuaikan apakah mode otomatis / manual
 
-                    // TODO: Zulfi dkk harus memastikan nilai mode yang benar
                     // manual
                     if (nilaiMode.equalsIgnoreCase("0")) {
                         mode.setValue(false);
@@ -232,5 +236,18 @@ public class SmartEnergyViewModel extends ViewModel {
             modeRef.addValueEventListener(modeListener);
         }
         return mode;
+    }
+
+    public Task<Void> updateMode(boolean newMode){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        if (newMode == true){
+            hashMap.put("Mode", "1");
+
+        } else {
+            hashMap.put("Mode", "0");
+        }
+
+        return smartCityRef.updateChildren(hashMap);
+
     }
 }

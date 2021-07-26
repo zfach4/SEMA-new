@@ -83,6 +83,11 @@
 
     <include
         android:id="@+id/content_auto"
-        layout="@layout/content_automatic_mode" />
+        layout="@layout/content_automatic_mode"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/contont_table"
+        layout="@layout/content_table_smart_energy"/>
 
 </LinearLayout>
