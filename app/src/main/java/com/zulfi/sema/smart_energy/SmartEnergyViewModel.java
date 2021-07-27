@@ -32,7 +32,6 @@ public class SmartEnergyViewModel extends ViewModel {
     private DatabaseReference azimuthRef;
     private DatabaseReference posisiServoRef;
     private DatabaseReference modeRef;
-    private DatabaseReference smartCityRef;
 
     // listener
     private ValueEventListener vAkiListener;
@@ -52,7 +51,7 @@ public class SmartEnergyViewModel extends ViewModel {
         azimuthRef = sensorRef.child("Azimuth");
         posisiServoRef = sensorRef.child("PosisiServo");
         // SmartCityAE18
-        smartCityRef = FirebaseDatabase.getInstance().getReference("SmartCityAE18");
+        DatabaseReference smartCityRef = FirebaseDatabase.getInstance().getReference("SmartCityAE18");
         // SmartCityAE18 children: Mode
         modeRef = smartCityRef.child("Mode");
     }
@@ -239,15 +238,13 @@ public class SmartEnergyViewModel extends ViewModel {
     }
 
     public Task<Void> updateMode(boolean newMode){
-        HashMap<String, Object> hashMap = new HashMap<>();
+        String stringMode = "";
         if (newMode == true){
-            hashMap.put("Mode", "1");
-
+            stringMode = "1";
         } else {
-            hashMap.put("Mode", "0");
+            stringMode = "0";
         }
 
-        return smartCityRef.updateChildren(hashMap);
-
+        return modeRef.setValue(stringMode);
     }
 }
