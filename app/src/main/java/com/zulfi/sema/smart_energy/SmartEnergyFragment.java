@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.zulfi.sema.R;
 
@@ -29,6 +31,7 @@ public class SmartEnergyFragment extends Fragment {
     private SmartEnergyViewModel mViewModel;
 
     private Switch switchMode;
+
     private TextView tvMode;
     private View manualContentView;
     private View autoContentView;
@@ -49,7 +52,6 @@ public class SmartEnergyFragment extends Fragment {
 
     private TableRow rowSudutServo;
     private TextView tvSudutServoTable;
-
 
     public static SmartEnergyFragment newInstance() {
         return new SmartEnergyFragment();
@@ -94,29 +96,14 @@ public class SmartEnergyFragment extends Fragment {
 
         tvMode = view.findViewById(R.id.tv_mode_state);
         switchMode = view.findViewById(R.id.switch_mode);
-        switchMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        // dipanggil kalau user mencet switch
+        switchMode.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("Zulfi Fachrurrozi", "mode sekarang : " + isChecked );
-                mViewModel.updateMode(isChecked).addOnSuccessListener(
-                        new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(getActivity(), "Berhasil Mengubah Mode", Toast.LENGTH_SHORT).show();
-                                Log.d("Update Mode", "Berhasil update mode ke " + isChecked);
-                            }
-                        }
-                ).addOnFailureListener(er->{
-                    Toast.makeText(getActivity(), ""+er.getMessage(), Toast.LENGTH_LONG).show();
-                    Log.d("Update Mode", "Gagal update mode ke " + isChecked);
-                    switchMode.setChecked(!isChecked);
-                });
+            public boolean onTouch(View v, MotionEvent event) {
+                switchMode.setTag(null);
+                return false;
             }
         });
-
-        // set initial state
-        // harusnya ngambil data dari server
-        setContentMode(switchMode.isChecked());
 
         return view;
     }
@@ -128,6 +115,35 @@ public class SmartEnergyFragment extends Fragment {
 
         // get data2 dari ViewModel
         loadDataFromFirebase();
+
+        // tambah listener untuk handle success / failure saat write data ke firebase
+        switchMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // check apakah ini dari user
+                if (buttonView.getTag() != null) {
+                    buttonView.setTag(null);
+                    return;
+                }
+
+                Log.d("Zulfi Fachrurrozi", "mode sekarang : " + isChecked );
+                // kirim data ke firebase
+                mViewModel.updateMode(isChecked).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), "Berhasil Mengubah Mode", Toast.LENGTH_SHORT).show();
+                        Log.d("Update Mode", "Berhasil update mode ke " + isChecked);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("Update Mode", "Gagal update mode ke " + isChecked);
+                        switchMode.setChecked(!isChecked);
+                    }
+                });
+            }
+        });
     }
 
     private void setContentMode(Boolean isChecked) {
@@ -167,6 +183,7 @@ public class SmartEnergyFragment extends Fragment {
         mViewModel.getMode().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                switchMode.setTag("SET_BY_APP");
                 switchMode.setChecked(aBoolean);
                 setContentMode(aBoolean);
             }
