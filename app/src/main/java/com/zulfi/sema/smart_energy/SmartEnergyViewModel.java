@@ -1,5 +1,6 @@
 package com.zulfi.sema.smart_energy;
 
+import android.content.res.Resources;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,18 +13,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.zulfi.sema.R;
 
 import java.util.HashMap;
 
 public class SmartEnergyViewModel extends ViewModel {
 
-    // variable realtime
+    // variable realtime - dapatkan value
     private MutableLiveData<String> vAki; // tegangan accu
     private MutableLiveData<String> vPanel; // tegangan panel surya
     private MutableLiveData<String> aPanel; // arus panel surya
     private MutableLiveData<String> azimuth;
     private MutableLiveData<String> posisiServo;
+
     private MutableLiveData<Boolean> mode;
+    private MutableLiveData<String> confirmText;
 
     // alamat database untuk tiap data item di firebase
     private DatabaseReference vAkiRef;
@@ -32,6 +36,8 @@ public class SmartEnergyViewModel extends ViewModel {
     private DatabaseReference azimuthRef;
     private DatabaseReference posisiServoRef;
     private DatabaseReference modeRef;
+    private DatabaseReference confirmRef;
+
 
     // listener
     private ValueEventListener vAkiListener;
@@ -39,21 +45,25 @@ public class SmartEnergyViewModel extends ViewModel {
     private ValueEventListener aPanelListener;
     private ValueEventListener azimuthListener;
     private ValueEventListener posisiServoListener;
+
     private ValueEventListener modeListener;
+    private ValueEventListener confirmListener;
 
     public SmartEnergyViewModel() {
         // Sensor
-        DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("Sensor");
+        DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("RealTimeData");
         // Sensor children: Aki, vPanel, aPanel, Azimuth, PosisiServo
-        vAkiRef = sensorRef.child("Aki");
-        vPanelRef = sensorRef.child("vPanel");
-        aPanelRef = sensorRef.child("aPanel");
-        azimuthRef = sensorRef.child("Azimuth");
-        posisiServoRef = sensorRef.child("PosisiServo");
+        vAkiRef = sensorRef.child("VoltageBaterai");
+        vPanelRef = sensorRef.child("VoltagePanelSUrya");
+        aPanelRef = sensorRef.child("CurrentPanelSurya");
+        azimuthRef = sensorRef.child("NilaiSudutAzimuthMathari");
+        posisiServoRef = sensorRef.child("NilaiSudutServo");
         // SmartCityAE18
-        DatabaseReference smartCityRef = FirebaseDatabase.getInstance().getReference("SmartCityAE18");
+        DatabaseReference controlRef = FirebaseDatabase.getInstance().getReference("Control");
         // SmartCityAE18 children: Mode
-        modeRef = smartCityRef.child("Mode");
+        modeRef = controlRef.child("Mode");
+        confirmRef = controlRef.child("Confirm");
+
     }
 
     // yang harus dilakukan ketika class ini akan dihapus
@@ -84,6 +94,10 @@ public class SmartEnergyViewModel extends ViewModel {
 
         if (modeListener != null) {
             modeRef.removeEventListener(modeListener);
+        }
+
+        if (confirmListener != null) {
+            confirmRef.removeEventListener(confirmListener);
         }
     }
 
@@ -237,6 +251,29 @@ public class SmartEnergyViewModel extends ViewModel {
         return mode;
     }
 
+    public MutableLiveData<String> getConfirmText() {
+        if (confirmText == null) {
+            confirmText = new MutableLiveData<>();
+            // read data confirmText dari firebase
+            confirmListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // parsing nilai Confirm dari firebase ke tipe data String
+                    String nilaiConfirmText = snapshot.getValue(String.class);
+                    // kasih nilaiConfirmText ke confirmText untuk dikirim ke SmartEnergyFragment
+                    confirmText.setValue(nilaiConfirmText);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("Zulfi Firebase", "Gagal read data confirmText dari firebase", error.toException());
+                }
+            };
+            confirmRef.addValueEventListener(confirmListener);
+        }
+        return confirmText;
+    }
+
     public Task<Void> updateMode(boolean newMode){
         String stringMode = "";
         if (newMode == true){
@@ -246,5 +283,13 @@ public class SmartEnergyViewModel extends ViewModel {
         }
 
         return modeRef.setValue(stringMode);
+    }
+
+    public Task<Void> updateSudutServo(String newSudutServo){
+        return posisiServoRef.setValue(newSudutServo);
+    }
+
+    public Task<Void> updateConfirm(){
+        return confirmRef.setValue("Data belum sampai ke NodeMCU");
     }
 }

@@ -30,8 +30,10 @@
     <string name="current">Ampere</string>
 
     <!-- Smart Light -->
-    <string name="light_off_title">The light is OFF</string>
-    <string name="light_on_title">The light is ON</string>
+    <string name="light_off_title1">Lampu 1 Padam</string>
+    <string name="light_on_title1">Lampu 1 Menyala</string>
+    <string name="light_off_title2">Lampu 2 Padam</string>
+    <string name="light_on_title2">Lampu 2 Menyala</string>
 
     <!-- Login -->
     <string name="title_activity_login">Login</string>
@@ -43,4 +45,10 @@
     <string name="pref_user_image_url">pref_user_img_url</string>
     <string name="sudut_servo">Sudut Servo</string>
     <string name="azimuth">Azimuth</string>
+    <string name="enter">Enter</string>
+    <string name="masukkan_angka">Masukkan Angka</string>
+    <string name="data_confirm">Data belum sampai ke NodeMCU</string>
+    <string name="data_confirm_success">Data telah terkirim</string>
+    <string name="sumber_listrik_ac">Sumber Listrik AC</string>
+    <string name="watt">Watt</string>
 </resources>
