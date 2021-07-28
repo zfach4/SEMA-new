@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".smart_light.SmartLightFragment">
+    tools:context=".smart_light.SmartLightFragment"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -13,25 +14,99 @@
         android:padding="16dp">
 
         <ImageButton
-            android:id="@+id/btn_light"
+            android:id="@+id/btn_light1"
             android:layout_width="wrap_content"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_light_off"
             android:background="@null" />
 
         <TextView
-            android:id="@+id/tv_light_state"
-            android:text="@string/light_off_title"
+            android:id="@+id/tv_light_state1"
+            android:text="@string/light_off_title1"
             android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="32dp"
+            android:paddingTop="10dp"
             android:textAlignment="center"
             android:layout_gravity="center_horizontal" />
 
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/btn_light2"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_light_off"
+            android:background="@null" />
+
+        <TextView
+            android:id="@+id/tv_light_state2"
+            android:text="@string/light_off_title2"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 
-</RelativeLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                style="@style/TextSpec.Field"
+                android:text="@string/sumber_listrik_ac" />
+
+            <TextView
+                android:id="@+id/tv_sumber_listrik_ac"
+                style="@style/TextSpec.Value"
+                android:text="-" />
+
+            <TextView
+                style="@style/TextSpec.Unit"
+                android:gravity="start"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                style="@style/TextSpec.Field"
+                android:text="KWH" />
+
+            <TextView
+                android:id="@+id/tv_kwh"
+                style="@style/TextSpec.Value"
+                android:text="@string/zero" />
+
+            <TextView
+                style="@style/TextSpec.Unit"
+                android:gravity="start"
+                android:text="@string/watt" />
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

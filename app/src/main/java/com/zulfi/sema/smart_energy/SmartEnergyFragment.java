@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TableRow;
@@ -42,7 +43,10 @@ public class SmartEnergyFragment extends Fragment {
 
     // manual content
     private TextView tvServoAngle;
-    private int servoAngle = 0;
+    private double servoAngle = 0;
+    private Button btnUpdateServo;
+    private EditText etServo;
+    private TextView tvConfirm;
 
     // table content
     private TextView tvAccuVoltage;
@@ -82,17 +86,19 @@ public class SmartEnergyFragment extends Fragment {
         // manual content
         manualContentView = view.findViewById(R.id.content_manual);
         tvServoAngle = manualContentView.findViewById(R.id.tv_servo_angle);
+        tvConfirm = manualContentView.findViewById(R.id.tv_confirm);
+        etServo = manualContentView.findViewById(R.id.et_sudut_servo);
+        btnUpdateServo = manualContentView.findViewById(R.id.btn_update_servo);
 
-        Button btnCW = manualContentView.findViewById(R.id.btn_cw);
-        btnCW.setOnClickListener(v -> {
-            changeServoAngleClockwise();
-        });
-
-        Button btnCCW = manualContentView.findViewById(R.id.btn_ccw);
-        btnCCW.setOnClickListener(v -> {
-            changeServoAngleCounterClockwise();
-        });
-
+//        Button btnCW = manualContentView.findViewById(R.id.btn_cw);
+//        btnCW.setOnClickListener(v -> {
+//            changeServoAngleClockwise();
+//        });
+//
+//        Button btnCCW = manualContentView.findViewById(R.id.btn_ccw);
+//        btnCCW.setOnClickListener(v -> {
+//            changeServoAngleCounterClockwise();
+//        });
 
         tvMode = view.findViewById(R.id.tv_mode_state);
         switchMode = view.findViewById(R.id.switch_mode);
@@ -144,6 +150,41 @@ public class SmartEnergyFragment extends Fragment {
                 });
             }
         });
+
+        btnUpdateServo.setOnClickListener(v -> {
+            //mengupdate sudut servo
+            String oldConfirm = tvConfirm.getText().toString();
+            String newServo = etServo.getText().toString();
+            tvConfirm.setText(R.string.data_confirm);
+            Log.d("Zulfi Fachrurrozi", "Mengirim ke Firebase nilai Sudut Servo : " + newServo);
+            mViewModel.updateSudutServo(newServo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d("Update Sudut Servo", "Gagal memperbaharui sudut Servo");
+                    tvConfirm.setText(oldConfirm);
+                }
+            });
+            //mengupdate confirm text
+            mViewModel.updateConfirm().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d("Update Confirm", "Gagal memperbaharui Confirm");
+                }
+            });
+        });
+
     }
 
     private void setContentMode(Boolean isChecked) {
@@ -227,9 +268,16 @@ public class SmartEnergyFragment extends Fragment {
         mViewModel.getPosisiServo().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                servoAngle = Integer.parseInt(s);
+                servoAngle = Double.parseDouble(s);
                 tvServoAngle.setText(s);
                 tvSudutServoTable.setText(s);
+            }
+        });
+
+        mViewModel.getConfirmText().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                tvConfirm.setText(s);
             }
         });
     }

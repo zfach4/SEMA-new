@@ -63,23 +63,6 @@
             android:textColor="@color/white"
             android:layout_marginTop="24dp"/>
 
-        <TextView
-            android:id="@+id/firebase_servo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="18sp"
-            android:layout_gravity="center"/>
-
-        <Button
-            android:id="@+id/btn_check"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="check"
-            android:backgroundTint="@color/buttonColor"
-            android:textColor="@color/white"
-            android:layout_marginTop="24dp"/>
-
     </LinearLayout>
 
 </RelativeLayout>
