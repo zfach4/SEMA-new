@@ -64,9 +64,9 @@ public class SmartLightFragment extends Fragment {
                 String newState;
                 isLightOn1 = !isLightOn1;
                 if (isLightOn1){
-                    newState = "ON";
+                    newState = "1";
                 } else {
-                    newState = "OFF";
+                    newState = "0";
                 }
                 mViewModel.updateLamp1(newState).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -85,9 +85,9 @@ public class SmartLightFragment extends Fragment {
                 String newState;
                 isLightOn2 = !isLightOn2;
                 if (isLightOn2){
-                    newState = "ON";
+                    newState = "1";
                 } else {
-                    newState = "OFF";
+                    newState = "0";
                 }
                 mViewModel.updateLamp2(newState).addOnFailureListener(new OnFailureListener() {
                     @Override

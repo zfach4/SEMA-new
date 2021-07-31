@@ -1,6 +1,5 @@
 package com.zulfi.sema.smart_energy;
 
-import android.content.res.Resources;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,9 +12,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.zulfi.sema.R;
-
-import java.util.HashMap;
 
 public class SmartEnergyViewModel extends ViewModel {
 
@@ -34,8 +30,10 @@ public class SmartEnergyViewModel extends ViewModel {
     private DatabaseReference vPanelRef;
     private DatabaseReference aPanelRef;
     private DatabaseReference azimuthRef;
-    private DatabaseReference posisiServoRef;
-    private DatabaseReference modeRef;
+    private DatabaseReference posisiServoGetterRef;
+    private DatabaseReference posisiServoSetterRef;
+    private DatabaseReference modeGetterRef;
+    private DatabaseReference modeSetterRef;
     private DatabaseReference confirmRef;
 
 
@@ -57,12 +55,15 @@ public class SmartEnergyViewModel extends ViewModel {
         vPanelRef = sensorRef.child("VoltagePanelSUrya");
         aPanelRef = sensorRef.child("CurrentPanelSurya");
         azimuthRef = sensorRef.child("NilaiSudutAzimuthMathari");
-        posisiServoRef = sensorRef.child("NilaiSudutServo");
+        modeGetterRef = sensorRef.child("Mode");
+        posisiServoGetterRef = sensorRef.child("NilaiSudutServo");
+
         // SmartCityAE18
         DatabaseReference controlRef = FirebaseDatabase.getInstance().getReference("Control");
         // SmartCityAE18 children: Mode
-        modeRef = controlRef.child("Mode");
+        modeSetterRef = controlRef.child("Mode");
         confirmRef = controlRef.child("Confirm");
+        posisiServoSetterRef = controlRef.child("Servo");
 
     }
 
@@ -89,11 +90,11 @@ public class SmartEnergyViewModel extends ViewModel {
         }
 
         if (posisiServoListener != null) {
-            posisiServoRef.removeEventListener(posisiServoListener);
+            posisiServoGetterRef.removeEventListener(posisiServoListener);
         }
 
         if (modeListener != null) {
-            modeRef.removeEventListener(modeListener);
+            modeGetterRef.removeEventListener(modeListener);
         }
 
         if (confirmListener != null) {
@@ -211,7 +212,7 @@ public class SmartEnergyViewModel extends ViewModel {
                     Log.w("Zulfi Firebase", "Gagal read data PosisiServo dari firebase", error.toException());
                 }
             };
-            posisiServoRef.addValueEventListener(posisiServoListener);
+            posisiServoGetterRef.addValueEventListener(posisiServoListener);
         }
         return posisiServo;
     }
@@ -228,17 +229,14 @@ public class SmartEnergyViewModel extends ViewModel {
                     // perikasi nilaiMode untuk menyesuaikan apakah mode otomatis / manual
 
                     // manual
-                    if (nilaiMode.equalsIgnoreCase("0")) {
+                    if (nilaiMode.equalsIgnoreCase("Manual")) {
                         mode.setValue(false);
                     }
                     // otomatis
-                    else if (nilaiMode.equalsIgnoreCase("1")) {
+                    else if (nilaiMode.equalsIgnoreCase("Otomatis")) {
                         mode.setValue(true);
                     }
                     // default nya otomatis
-                    else {
-                        mode.setValue(true);
-                    }
                 }
 
                 @Override
@@ -246,7 +244,7 @@ public class SmartEnergyViewModel extends ViewModel {
                     Log.w("Zulfi Firebase", "Gagal read data mode dari firebase", error.toException());
                 }
             };
-            modeRef.addValueEventListener(modeListener);
+            modeGetterRef.addValueEventListener(modeListener);
         }
         return mode;
     }
@@ -282,11 +280,11 @@ public class SmartEnergyViewModel extends ViewModel {
             stringMode = "0";
         }
 
-        return modeRef.setValue(stringMode);
+        return modeSetterRef.setValue(stringMode);
     }
 
     public Task<Void> updateSudutServo(String newSudutServo){
-        return posisiServoRef.setValue(newSudutServo);
+        return posisiServoSetterRef.setValue(newSudutServo);
     }
 
     public Task<Void> updateConfirm(){

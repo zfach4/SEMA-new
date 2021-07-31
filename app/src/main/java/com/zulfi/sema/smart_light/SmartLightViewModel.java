@@ -22,8 +22,10 @@ public class SmartLightViewModel extends ViewModel {
     private MutableLiveData<String> kwh;
 
     // alamat database untuk tiap data item di firebase
-    private DatabaseReference lamp1Ref;
-    private DatabaseReference lamp2Ref;
+    private DatabaseReference lamp1GetterRef;
+    private DatabaseReference lamp1SetterRef;
+    private DatabaseReference lamp2GetterRef;
+    private DatabaseReference lamp2SetterRef;
     private DatabaseReference sumberACRef;
     private DatabaseReference kwhRef;
 
@@ -36,11 +38,15 @@ public class SmartLightViewModel extends ViewModel {
     public SmartLightViewModel(){
         // Sensor
         DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("RealTimeData");
-        // Sensor children: Aki, vPanel, aPanel, Azimuth, PosisiServo
-        lamp1Ref = sensorRef.child("Lampu1");
-        lamp2Ref = sensorRef.child("Lampu2");
         sumberACRef = sensorRef.child("SumberListrikAC");
         kwhRef = sensorRef.child("pzemEnergy(Kwh)");
+        lamp1GetterRef = sensorRef.child("Lampu1");
+        lamp2GetterRef = sensorRef.child("Lampu2");
+        DatabaseReference controlRef = FirebaseDatabase.getInstance().getReference("Control");
+        // Sensor children: Aki, vPanel, aPanel, Azimuth, PosisiServo
+        lamp1SetterRef = controlRef.child("Lampu1");
+        lamp2SetterRef = controlRef.child("Lampu2");
+
     }
 
     // yang harus dilakukan ketika class ini akan dihapus
@@ -50,11 +56,11 @@ public class SmartLightViewModel extends ViewModel {
         // hapus listener bila sudah di-create
 
         if (lamp1Listener != null) {
-            lamp1Ref.removeEventListener(lamp1Listener);
+            lamp1GetterRef.removeEventListener(lamp1Listener);
         }
 
         if (lamp2Listener != null) {
-            lamp2Ref.removeEventListener(lamp2Listener);
+            lamp2GetterRef.removeEventListener(lamp2Listener);
         }
 
         if (sumberACListener != null) {
@@ -84,7 +90,7 @@ public class SmartLightViewModel extends ViewModel {
                     Log.w("Zulfi Firebase", "Gagal read data Lamp1 dari firebase", error.toException());
                 }
             };
-            lamp1Ref.addValueEventListener(lamp1Listener);
+            lamp1GetterRef.addValueEventListener(lamp1Listener);
         }
         return lamp1;
     }
@@ -107,7 +113,7 @@ public class SmartLightViewModel extends ViewModel {
                     Log.w("Zulfi Firebase", "Gagal read data lamp2 dari firebase", error.toException());
                 }
             };
-            lamp2Ref.addValueEventListener(lamp2Listener);
+            lamp2GetterRef.addValueEventListener(lamp2Listener);
         }
         return lamp2;
     }
@@ -159,10 +165,10 @@ public class SmartLightViewModel extends ViewModel {
     }
 
     public Task<Void> updateLamp1(String state) {
-        return lamp1Ref.setValue(state);
+        return lamp1SetterRef.setValue(state);
     }
 
     public Task<Void> updateLamp2(String state) {
-        return  lamp2Ref.setValue(state);
+        return  lamp2SetterRef.setValue(state);
     }
 }
