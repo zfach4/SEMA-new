@@ -51,4 +51,5 @@
     <string name="data_confirm_success">Data telah terkirim</string>
     <string name="sumber_listrik_ac">Sumber Listrik AC</string>
     <string name="watt">Watt</string>
+    <string name="terakhir_update">Terakhir Update</string>
 </resources>

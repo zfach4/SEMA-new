@@ -20,6 +20,7 @@ public class SmartLightViewModel extends ViewModel {
     private MutableLiveData<String> lamp2;
     private MutableLiveData<String> sumberAC;
     private MutableLiveData<String> kwh;
+    private MutableLiveData<Boolean> mode;
 
     // alamat database untuk tiap data item di firebase
     private DatabaseReference lamp1GetterRef;
@@ -28,24 +29,29 @@ public class SmartLightViewModel extends ViewModel {
     private DatabaseReference lamp2SetterRef;
     private DatabaseReference sumberACRef;
     private DatabaseReference kwhRef;
+    private DatabaseReference modeGetterRef;
+    private DatabaseReference modeSetterRef;
 
     // listener
     private ValueEventListener lamp1Listener;
     private ValueEventListener lamp2Listener;
     private ValueEventListener sumberACListener;
     private ValueEventListener kwhListener;
+    private ValueEventListener modeListener;
 
     public SmartLightViewModel(){
         // Sensor
         DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("RealTimeData");
         sumberACRef = sensorRef.child("SumberListrikAC");
-        kwhRef = sensorRef.child("pzemEnergy(Kwh)");
+        kwhRef = sensorRef.child("pzemValue");
         lamp1GetterRef = sensorRef.child("Lampu1");
         lamp2GetterRef = sensorRef.child("Lampu2");
+        modeGetterRef = sensorRef.child("Mode");
         DatabaseReference controlRef = FirebaseDatabase.getInstance().getReference("Control");
         // Sensor children: Aki, vPanel, aPanel, Azimuth, PosisiServo
         lamp1SetterRef = controlRef.child("Lampu1");
         lamp2SetterRef = controlRef.child("Lampu2");
+        modeSetterRef = controlRef.child("Mode");
 
     }
 
@@ -61,6 +67,10 @@ public class SmartLightViewModel extends ViewModel {
 
         if (lamp2Listener != null) {
             lamp2GetterRef.removeEventListener(lamp2Listener);
+        }
+
+        if (modeListener != null) {
+            modeGetterRef.removeEventListener(modeListener);
         }
 
         if (sumberACListener != null) {
@@ -164,11 +174,54 @@ public class SmartLightViewModel extends ViewModel {
         return kwh;
     }
 
+    public MutableLiveData<Boolean> getMode() {
+        if (mode == null) {
+            mode = new MutableLiveData<>();
+            // read data mode dari firebase
+            modeListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // parsing nilai mode dari firebase ke tipe data String
+                    String nilaiMode = snapshot.getValue(String.class);
+                    // perikasi nilaiMode untuk menyesuaikan apakah mode otomatis / manual
+
+                    // manual
+                    if (nilaiMode.equalsIgnoreCase("Manual")) {
+                        mode.setValue(false);
+                    }
+                    // otomatis
+                    else if (nilaiMode.equalsIgnoreCase("Otomatis")) {
+                        mode.setValue(true);
+                    }
+                    // default nya otomatis
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("Zulfi Firebase", "Gagal read data mode dari firebase", error.toException());
+                }
+            };
+            modeGetterRef.addValueEventListener(modeListener);
+        }
+        return mode;
+    }
+
     public Task<Void> updateLamp1(String state) {
         return lamp1SetterRef.setValue(state);
     }
 
     public Task<Void> updateLamp2(String state) {
         return  lamp2SetterRef.setValue(state);
+    }
+
+    public Task<Void> updateMode(boolean newMode){
+        String stringMode = "";
+        if (newMode == true){
+            stringMode = "1";
+        } else {
+            stringMode = "0";
+        }
+
+        return modeSetterRef.setValue(stringMode);
     }
 }

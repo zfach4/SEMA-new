@@ -107,4 +107,27 @@
             android:gravity="start"
             android:text="" />
     </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            style="@style/TextSpec.Field"
+            android:text="@string/terakhir_update" />
+
+        <TextView
+            android:id="@+id/tv_date_hour"
+            style="@style/TextSpec.Value"
+            android:text="@string/zero" />
+
+        <TextView
+            style="@style/TextSpec.Unit"
+            android:gravity="start"
+            android:text="" />
+
+
+
+
+    </TableRow>
 </TableLayout>

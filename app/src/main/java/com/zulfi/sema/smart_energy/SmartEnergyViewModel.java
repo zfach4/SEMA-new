@@ -24,6 +24,8 @@ public class SmartEnergyViewModel extends ViewModel {
 
     private MutableLiveData<Boolean> mode;
     private MutableLiveData<String> confirmText;
+    private MutableLiveData<String> hour;
+    private MutableLiveData<String> minute;
 
     // alamat database untuk tiap data item di firebase
     private DatabaseReference vAkiRef;
@@ -36,6 +38,9 @@ public class SmartEnergyViewModel extends ViewModel {
     private DatabaseReference modeSetterRef;
     private DatabaseReference confirmRef;
 
+    private DatabaseReference hourRef;
+    private DatabaseReference minuteRef;
+
 
     // listener
     private ValueEventListener vAkiListener;
@@ -47,6 +52,9 @@ public class SmartEnergyViewModel extends ViewModel {
     private ValueEventListener modeListener;
     private ValueEventListener confirmListener;
 
+    private ValueEventListener hourListener;
+    private ValueEventListener minuteListener;
+
     public SmartEnergyViewModel() {
         // Sensor
         DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("RealTimeData");
@@ -57,8 +65,10 @@ public class SmartEnergyViewModel extends ViewModel {
         azimuthRef = sensorRef.child("NilaiSudutAzimuthMathari");
         modeGetterRef = sensorRef.child("Mode");
         posisiServoGetterRef = sensorRef.child("NilaiSudutServo");
+        hourRef = sensorRef.child("Jam");
+        minuteRef = sensorRef.child("Menit");
 
-        // SmartCityAE18
+        // Control
         DatabaseReference controlRef = FirebaseDatabase.getInstance().getReference("Control");
         // SmartCityAE18 children: Mode
         modeSetterRef = controlRef.child("Mode");
@@ -99,6 +109,14 @@ public class SmartEnergyViewModel extends ViewModel {
 
         if (confirmListener != null) {
             confirmRef.removeEventListener(confirmListener);
+        }
+
+        if (hourListener != null) {
+            hourRef.removeEventListener(hourListener);
+        }
+
+        if (minuteListener != null) {
+            minuteRef.removeEventListener(minuteListener);
         }
     }
 
@@ -270,6 +288,52 @@ public class SmartEnergyViewModel extends ViewModel {
             confirmRef.addValueEventListener(confirmListener);
         }
         return confirmText;
+    }
+
+    public MutableLiveData<String> getHour() {
+        if (hour == null) {
+            hour = new MutableLiveData<>();
+            // read data hour dari firebase
+            hourListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // parsing nilai hour dari firebase ke tipe data String
+                    String nilaiHour = snapshot.getValue(String.class);
+                    // kasih nilaiHour ke hour untuk dikirim ke SmartEnergyFragment
+                    hour.setValue(nilaiHour);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("Zulfi Firebase", "Gagal read data hour dari firebase", error.toException());
+                }
+            };
+            hourRef.addValueEventListener(hourListener);
+        }
+        return hour;
+    }
+
+    public MutableLiveData<String> getMinute() {
+        if (minute == null) {
+            minute = new MutableLiveData<>();
+            // read data minute dari firebase
+            minuteListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // parsing nilai minute dari firebase ke tipe data String
+                    String nilaiMinute = snapshot.getValue(String.class);
+                    // kasih nilaiMinute ke minute untuk dikirim ke SmartEnergyFragment
+                    minute.setValue(nilaiMinute);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("Zulfi Firebase", "Gagal read data minute dari firebase", error.toException());
+                }
+            };
+            minuteRef.addValueEventListener(minuteListener);
+        }
+        return minute;
     }
 
     public Task<Void> updateMode(boolean newMode){

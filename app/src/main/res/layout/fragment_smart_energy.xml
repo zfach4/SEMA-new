@@ -6,80 +6,28 @@
     tools:context=".smart_energy.SmartEnergyFragment"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:text="Mode Pengaturan"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tv_mode_state"
-                android:text="Manual"
-                android:textSize="14sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <Switch
-            android:id="@+id/switch_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-
-
-        <!--        <Button-->
-        <!--            android:id="@+id/btn_manual"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/btn_manual_title" />-->
-
-        <!--        <Button-->
-        <!--            android:id="@+id/btn_auto"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Otomatis" />-->
-    </LinearLayout>
-
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/text_home"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="8dp"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:layout_marginEnd="8dp"-->
-    <!--        android:textAlignment="center"-->
-    <!--        android:textSize="20sp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <include
+        android:id="@+id/content_switch"
+        layout="@layout/content_mode_switch"
+        />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="16dp"/>
 
+    <ProgressBar
+        android:id="@+id/pb_smart_energy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"/>
+
+
     <include
         android:id="@+id/content_manual"
-        layout="@layout/content_manual_mode" />
+        layout="@layout/content_manual_mode"
+        android:visibility="gone"/>
 
     <include
         android:id="@+id/content_auto"
@@ -88,6 +36,7 @@
 
     <include
         android:id="@+id/contont_table"
-        layout="@layout/content_table_smart_energy"/>
+        layout="@layout/content_table_smart_energy"
+        android:visibility="gone"/>
 
 </LinearLayout>

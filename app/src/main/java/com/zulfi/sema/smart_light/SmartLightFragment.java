@@ -11,9 +11,13 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +33,15 @@ public class SmartLightFragment extends Fragment {
     private TextView tvLightState1, tvLightState2, tvSumberAC, tvKwh;
 
     private Boolean isLightOn1 = false, isLightOn2 = false;
+
+    private ProgressBar progress;
+    private View contentTable;
+
+    private View contentViewLamp1;
+    private View contentViewLamp2;
+
+    private Switch switchMode;
+    private TextView tvMode;
 
     public static SmartLightFragment newInstance() {
         return new SmartLightFragment();
@@ -47,6 +60,22 @@ public class SmartLightFragment extends Fragment {
 
         tvSumberAC = view.findViewById(R.id.tv_sumber_listrik_ac);
         tvKwh = view.findViewById(R.id.tv_kwh);
+        progress = view.findViewById(R.id.pb_smart_light);
+        contentTable = view.findViewById(R.id.content_table_smart_light);
+        contentViewLamp1 = view.findViewById(R.id.content_view_lamp1);
+        contentViewLamp2 = view.findViewById(R.id.content_view_lamp2);
+
+        View contentMode = view.findViewById(R.id.content_switch);
+        tvMode = contentMode.findViewById(R.id.tv_mode_state);
+        switchMode = contentMode.findViewById(R.id.switch_mode);
+        // dipanggil kalau user mencet switch
+        switchMode.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switchMode.setTag(null);
+                return false;
+            }
+        });
 
         return view;
     }
@@ -57,6 +86,40 @@ public class SmartLightFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(SmartLightViewModel.class);
 
         loadDataFromFirebase();
+
+        // tambah listener untuk handle success / failure saat write data ke firebase
+        switchMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // check apakah ini dari user
+                if (buttonView.getTag() != null) {
+                    buttonView.setTag(null);
+                    return;
+                }
+
+                Log.d("Zulfi Fachrurrozi", "mode sekarang : " + isChecked );
+                // kirim data ke firebase
+                progress.setVisibility(View.VISIBLE);
+                contentViewLamp1.setEnabled(false);
+                contentViewLamp2.setEnabled(false);
+                tvMode.setText("-");
+                mViewModel.updateMode(isChecked).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), "Berhasil Mengubah Mode", Toast.LENGTH_SHORT).show();
+                        Log.d("Update Mode", "Berhasil update mode ke " + isChecked);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("Update Mode", "Gagal update mode ke " + isChecked);
+                        switchMode.setChecked(!isChecked);
+                        setContentMode(switchMode.isChecked());
+                    }
+                });
+            }
+        });
 
         btnLight1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +164,36 @@ public class SmartLightFragment extends Fragment {
         });
     }
 
+    private void setContentMode(boolean checked) {
+        if (checked){
+            tvMode.setText("Otomatis");
+            contentViewLamp1.setEnabled(false);
+            contentViewLamp2.setEnabled(false);
+        } else {
+            tvMode.setText("Manual");
+            contentViewLamp1.setEnabled(true);
+            contentViewLamp2.setEnabled(true);
+        }
+    }
+
     private void loadDataFromFirebase(){
+        progress.setVisibility(View.VISIBLE);
+        // mode
+        mViewModel.getMode().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                switchMode.setTag("SET_BY_APP");
+                switchMode.setChecked(aBoolean);
+                // disable atau enable button lamp
+                setContentMode(aBoolean);
+
+                contentTable.setVisibility(View.VISIBLE);
+                contentViewLamp1.setVisibility(View.VISIBLE);
+                contentViewLamp2.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
+            }
+        });
+
         mViewModel.getLamp1().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -151,5 +243,6 @@ public class SmartLightFragment extends Fragment {
                 tvKwh.setText(s);
             }
         });
+
     }
 }
