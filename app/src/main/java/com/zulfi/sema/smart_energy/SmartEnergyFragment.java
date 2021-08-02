@@ -3,6 +3,7 @@ package com.zulfi.sema.smart_energy;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -57,6 +58,14 @@ public class SmartEnergyFragment extends Fragment {
     private TableRow rowSudutServo;
     private TextView tvSudutServoTable;
 
+    private TextView tvDate;
+
+    private String hour = "";
+    private String minute = "";
+
+    private ProgressBar progress;
+    private View tableContentView;
+
     public static SmartEnergyFragment newInstance() {
         return new SmartEnergyFragment();
     }
@@ -73,7 +82,7 @@ public class SmartEnergyFragment extends Fragment {
         chartBatteryPercentage = pieContentView.findViewById(R.id.stats_progressbar);
         tvBatteryPercentage = pieContentView.findViewById(R.id.tv_battery_percentage);
         // accu and solar panel measure
-        View tableContentView = view.findViewById(R.id.contont_table);
+        tableContentView = view.findViewById(R.id.contont_table);
         tvAccuVoltage = tableContentView.findViewById(R.id.tv_accu_voltage);
         tvSolarPanelVoltage = tableContentView.findViewById(R.id.tv_solar_voltage);
         tvSolarPanelCurrent = tableContentView.findViewById(R.id.tv_solar_current);
@@ -82,6 +91,8 @@ public class SmartEnergyFragment extends Fragment {
         // sudut servo (tulisan kecil, paling bawah)
         rowSudutServo = tableContentView.findViewById(R.id.row_sudut_servo);
         tvSudutServoTable = tableContentView.findViewById(R.id.tv_servo);
+        //date
+        tvDate = tableContentView.findViewById(R.id.tv_date_hour);
 
         // manual content
         manualContentView = view.findViewById(R.id.content_manual);
@@ -99,9 +110,9 @@ public class SmartEnergyFragment extends Fragment {
 //        btnCCW.setOnClickListener(v -> {
 //            changeServoAngleCounterClockwise();
 //        });
-
-        tvMode = view.findViewById(R.id.tv_mode_state);
-        switchMode = view.findViewById(R.id.switch_mode);
+        View contentMode = view.findViewById(R.id.content_switch);
+        tvMode = contentMode.findViewById(R.id.tv_mode_state);
+        switchMode = contentMode.findViewById(R.id.switch_mode);
         // dipanggil kalau user mencet switch
         switchMode.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -110,6 +121,9 @@ public class SmartEnergyFragment extends Fragment {
                 return false;
             }
         });
+
+        progress = (ProgressBar) view.findViewById(R.id.pb_smart_energy);
+
 
         return view;
     }
@@ -134,6 +148,11 @@ public class SmartEnergyFragment extends Fragment {
 
                 Log.d("Zulfi Fachrurrozi", "mode sekarang : " + isChecked );
                 // kirim data ke firebase
+                progress.setVisibility(View.VISIBLE);
+                tableContentView.setVisibility(View.GONE);
+                manualContentView.setVisibility(View.GONE);
+                autoContentView.setVisibility(View.GONE);
+                tvMode.setText("-");
                 mViewModel.updateMode(isChecked).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -146,12 +165,19 @@ public class SmartEnergyFragment extends Fragment {
                         Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
                         Log.d("Update Mode", "Gagal update mode ke " + isChecked);
                         switchMode.setChecked(!isChecked);
+                        setContentMode(switchMode.isChecked());
                     }
                 });
             }
         });
 
         btnUpdateServo.setOnClickListener(v -> {
+            // disable Button dan EditText
+            btnUpdateServo.setEnabled(false);
+            etServo.setEnabled(false);
+            String oldServo = tvServoAngle.getText().toString();
+            tvServoAngle.setText("-");
+
             //mengupdate sudut servo
             String oldConfirm = tvConfirm.getText().toString();
             String newServo = etServo.getText().toString();
@@ -168,6 +194,10 @@ public class SmartEnergyFragment extends Fragment {
                     Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
                     Log.d("Update Sudut Servo", "Gagal memperbaharui sudut Servo");
                     tvConfirm.setText(oldConfirm);
+
+                    btnUpdateServo.setEnabled(true);
+                    etServo.setEnabled(true);
+                    tvServoAngle.setText(oldServo);
                 }
             });
             //mengupdate confirm text
@@ -201,6 +231,8 @@ public class SmartEnergyFragment extends Fragment {
             manualContentView.setVisibility(View.GONE);
             rowSudutServo.setVisibility(View.VISIBLE);
         }
+        tableContentView.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.GONE);
     }
 
     private void changeServoAngleClockwise() {
@@ -220,6 +252,9 @@ public class SmartEnergyFragment extends Fragment {
 
     // load data dari viewmodel
     private void loadDataFromFirebase() {
+        // ProgressBar
+        progress.setVisibility(View.VISIBLE);
+
         // mode
         mViewModel.getMode().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
@@ -265,12 +300,19 @@ public class SmartEnergyFragment extends Fragment {
             }
         });
 
+
+
         mViewModel.getPosisiServo().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 servoAngle = Double.parseDouble(s);
                 tvServoAngle.setText(s);
                 tvSudutServoTable.setText(s);
+
+                // enable button dan EditText
+                btnUpdateServo.setEnabled(true);
+                etServo.setEnabled(true);
+                etServo.setText("");
             }
         });
 
@@ -280,5 +322,24 @@ public class SmartEnergyFragment extends Fragment {
                 tvConfirm.setText(s);
             }
         });
+
+        // date
+        mViewModel.getHour().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                hour = s;
+                tvDate.setText(hour + ":" + minute);
+            }
+        });
+        mViewModel.getMinute().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String t) {
+                minute = t;
+                tvDate.setText(hour + ":" + minute);
+            }
+        });
+
+//        tableContentView.setVisibility(View.VISIBLE);
+//        progress.setVisibility(View.GONE);
     }
 }
