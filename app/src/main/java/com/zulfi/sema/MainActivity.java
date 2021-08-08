@@ -24,11 +24,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.zulfi.sema.about.AboutFragment;
 import com.zulfi.sema.home.HomeFragment;
 import com.zulfi.sema.smart_energy.SmartEnergyFragment;
@@ -47,9 +53,13 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle toggle;
 
     private TextView tvUsername;
-    private String username;
 
     private Firebase mRef;
+
+    private FirebaseAuth mAuth;
+
+    private DatabaseReference userRef;
+    private TextView tvName, tvTelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +106,30 @@ public class MainActivity extends AppCompatActivity {
         } else {
             int contentId = savedInstanceState.getInt(FRAGMENT_CONTENT);
             setContentMain(contentId);
+        }
+
+
+    }
+
+    private void settingUsersData(){
+        String UID = mPreferences.getString(getString(R.string.pref_uid_key), "-");
+        if(UID != "-"){
+            userRef = FirebaseDatabase.getInstance().getReference("Users").child(UID);
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // parsing nilai nama dari firebase ke tipe data String
+                    Users usersObject = snapshot.getValue(Users.class);
+                    // kasih nilai nama ke nama untuk dikirim ke SmartEnergyFragment
+                    tvName.setText(usersObject.getNama());
+                    tvTelp.setText(usersObject.getTelp());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
     }
 
@@ -158,20 +192,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupDrawerContent(NavigationView navigationView) {
         // set user profile
-        String imgUrl = mPreferences.getString(getString(R.string.pref_user_image_url), "cute.png");
-        String username = mPreferences.getString(getString(R.string.pref_user_fullname_key), "Zulfi Fachrurrozi");
-        String email = mPreferences.getString(getString(R.string.pref_user_email_key), "zulfi.abc@gmail.com");
+        String imgUrl = mPreferences.getString(getString(R.string.pref_user_image_url), "-");
+        String username = mPreferences.getString(getString(R.string.pref_user_fullname_key), "-");
+        String email = mPreferences.getString(getString(R.string.pref_user_email_key), "-");
 
         View headerView = navigationView.getHeaderView(0);
         ImageView imageView = (ImageView) headerView.findViewById(R.id.img_profile_photo);
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.cute));
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_profile_foreground));
 
-        TextView tvName = (TextView) headerView.findViewById(R.id.tv_name);
-        tvName.setText(username);
+        tvName = (TextView) headerView.findViewById(R.id.tv_name);
+        tvTelp = (TextView) headerView.findViewById(R.id.tv_telp);
 
         TextView tvEmail = (TextView) headerView.findViewById(R.id.tv_email);
         tvEmail.setText(email);
-
+        settingUsersData();
         // membuat listener untuk menu list (home, smart energy, dll)
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             //menentukan aksi yang akan dilakukan ketika salah satu menu item dipilih / ditekan
@@ -235,6 +269,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logoutUser() {
+
+            mAuth.getInstance().signOut();
+
         // hapus data-data user dan status login jadi false
 
         // set isLogin = false

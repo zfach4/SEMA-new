@@ -100,14 +100,15 @@ public class SmartLightFragment extends Fragment {
                 Log.d("Zulfi Fachrurrozi", "mode sekarang : " + isChecked );
                 // kirim data ke firebase
                 progress.setVisibility(View.VISIBLE);
-                contentViewLamp1.setEnabled(false);
-                contentViewLamp2.setEnabled(false);
+                contentViewLamp1.setVisibility(View.GONE);
+                contentViewLamp2.setVisibility(View.GONE);
+                switchMode.setEnabled(false);
                 tvMode.setText("-");
                 mViewModel.updateMode(isChecked).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getActivity(), "Berhasil Mengubah Mode", Toast.LENGTH_SHORT).show();
-                        Log.d("Update Mode", "Berhasil update mode ke " + isChecked);
+                        Toast.makeText(getActivity(), "Mengubah Mode", Toast.LENGTH_SHORT).show();
+                        Log.d("Update Mode", "Update mode ke " + isChecked);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -116,6 +117,9 @@ public class SmartLightFragment extends Fragment {
                         Log.d("Update Mode", "Gagal update mode ke " + isChecked);
                         switchMode.setChecked(!isChecked);
                         setContentMode(switchMode.isChecked());
+                        switchMode.setEnabled(true);
+                        contentViewLamp1.setVisibility(View.VISIBLE);
+                        contentViewLamp2.setVisibility(View.VISIBLE);
                     }
                 });
             }
@@ -131,12 +135,20 @@ public class SmartLightFragment extends Fragment {
                 } else {
                     newState = "0";
                 }
-                mViewModel.updateLamp1(newState).addOnFailureListener(new OnFailureListener() {
+                btnLight1.setEnabled(false);
+                mViewModel.updateLamp1(newState).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), "Memperbaharui Data Lamp1", Toast.LENGTH_SHORT).show();
+                        Log.d("Update Status", "Lamp1 =  " + newState);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
                         Log.d("Update Lamp1", "Gagal memperbaharui Lamp1 menjadi " + newState);
                         isLightOn1 = !isLightOn1;
+                        btnLight1.setEnabled(true);
                     }
                 });
             }
@@ -152,12 +164,20 @@ public class SmartLightFragment extends Fragment {
                 } else {
                     newState = "0";
                 }
-                mViewModel.updateLamp2(newState).addOnFailureListener(new OnFailureListener() {
+                btnLight2.setEnabled(false);
+                mViewModel.updateLamp2(newState).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), "Memperbaharui Data Lamp2", Toast.LENGTH_SHORT).show();
+                        Log.d("Update Status", "Lamp2 =  " + newState);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
                         Log.d("Update Lamp2", "Gagal memperbaharui Lamp2 menjadi " + newState);
                         isLightOn2 = !isLightOn2;
+                        btnLight2.setEnabled(true);
                     }
                 });
             }
@@ -167,12 +187,12 @@ public class SmartLightFragment extends Fragment {
     private void setContentMode(boolean checked) {
         if (checked){
             tvMode.setText("Otomatis");
-            contentViewLamp1.setEnabled(false);
-            contentViewLamp2.setEnabled(false);
+            btnLight1.setEnabled(false);
+            btnLight2.setEnabled(false);
         } else {
             tvMode.setText("Manual");
-            contentViewLamp1.setEnabled(true);
-            contentViewLamp2.setEnabled(true);
+            btnLight1.setEnabled(true);
+            btnLight2.setEnabled(true);
         }
     }
 
@@ -186,11 +206,14 @@ public class SmartLightFragment extends Fragment {
                 switchMode.setChecked(aBoolean);
                 // disable atau enable button lamp
                 setContentMode(aBoolean);
+                switchMode.setEnabled(true);
 
                 contentTable.setVisibility(View.VISIBLE);
                 contentViewLamp1.setVisibility(View.VISIBLE);
                 contentViewLamp2.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
+                contentViewLamp1.setVisibility(View.VISIBLE);
+                contentViewLamp2.setVisibility(View.VISIBLE);
             }
         });
 
@@ -207,6 +230,7 @@ public class SmartLightFragment extends Fragment {
                     tvLightState1.setText(R.string.light_off_title1);
                     isLightOn1 = false;
                 }
+                btnLight1.setEnabled(true);
             }
         });
 
@@ -223,6 +247,7 @@ public class SmartLightFragment extends Fragment {
                     tvLightState2.setText(R.string.light_off_title2);
                     isLightOn2 = false;
                 }
+                btnLight2.setEnabled(true);
             }
         });
 

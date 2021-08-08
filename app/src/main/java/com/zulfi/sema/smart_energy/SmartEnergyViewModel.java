@@ -57,7 +57,7 @@ public class SmartEnergyViewModel extends ViewModel {
 
     public SmartEnergyViewModel() {
         // Sensor
-        DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("RealTimeData");
+        DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("DataUpdateTerakhir");
         // Sensor children: Aki, vPanel, aPanel, Azimuth, PosisiServo
         vAkiRef = sensorRef.child("VoltageBaterai");
         vPanelRef = sensorRef.child("VoltagePanelSUrya");
