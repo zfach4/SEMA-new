@@ -152,12 +152,13 @@ public class SmartEnergyFragment extends Fragment {
                 tableContentView.setVisibility(View.GONE);
                 manualContentView.setVisibility(View.GONE);
                 autoContentView.setVisibility(View.GONE);
+                switchMode.setEnabled(false);
                 tvMode.setText("-");
                 mViewModel.updateMode(isChecked).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getActivity(), "Berhasil Mengubah Mode", Toast.LENGTH_SHORT).show();
-                        Log.d("Update Mode", "Berhasil update mode ke " + isChecked);
+                        Toast.makeText(getActivity(), "Mengubah Mode", Toast.LENGTH_SHORT).show();
+                        Log.d("Update Mode", "Update mode ke " + isChecked);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -166,6 +167,7 @@ public class SmartEnergyFragment extends Fragment {
                         Log.d("Update Mode", "Gagal update mode ke " + isChecked);
                         switchMode.setChecked(!isChecked);
                         setContentMode(switchMode.isChecked());
+                        switchMode.setEnabled(true);
                     }
                 });
             }
@@ -262,6 +264,7 @@ public class SmartEnergyFragment extends Fragment {
                 switchMode.setTag("SET_BY_APP");
                 switchMode.setChecked(aBoolean);
                 setContentMode(aBoolean);
+                switchMode.setEnabled(true);
             }
         });
 
@@ -335,7 +338,11 @@ public class SmartEnergyFragment extends Fragment {
             @Override
             public void onChanged(String t) {
                 minute = t;
-                tvDate.setText(hour + ":" + minute);
+                if (Integer.parseInt(minute) < 10){
+                    tvDate.setText(hour + ":0" + minute);
+                } else {
+                    tvDate.setText(hour + ":" + minute);
+                }
             }
         });
 

@@ -3,19 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.HomeFragment">
+    tools:context=".home.HomeFragment"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:padding="16dp" >
+        android:padding="16dp"
+        android:gravity="center">
 
         <ImageView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:src="@drawable/smartcity"/>
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sc1"
+            android:layout_marginBottom="10dp"/>
 
         <Button
             android:id="@+id/btn_menu_smart_energy"

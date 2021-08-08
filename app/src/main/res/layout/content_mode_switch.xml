@@ -18,20 +18,24 @@
             android:layout_height="wrap_content"
             android:text="Mode Pengaturan"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/tv_mode_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="-"
-            android:textSize="14sp" />
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 
     <Switch
         android:id="@+id/switch_mode"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:enabled="false"/>
 
 </LinearLayout>

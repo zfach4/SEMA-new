@@ -1,5 +1,6 @@
 package com.zulfi.sema;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,16 +9,24 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class SplashScreenActivity extends AppCompatActivity {
     private SharedPreferences mPreferences;
 
-//    private GoogleSignInClient googleClient;
-//    private FirebaseAuth mAuth;
-//    private static int RC_SIGN_IN = 100;
+    private FirebaseAuth mAuth;
+    private static int RC_SIGN_IN = 100;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,34 +36,28 @@ public class SplashScreenActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
 
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.firebase_web_client_id))
-//                .requestEmail()
-//                .build();
-//
-//        googleClient = GoogleSignIn.getClient(this, gso);
-//        mAuth = FirebaseAuth.getInstance();
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         // masih manual
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // YANG DIKASIH KOMENTAR DARI GOOGLE LOGIN
-//        final FirebaseUser user = mAuth.getCurrentUser();
+        // memeriksa pengguna saat ini sudah login atau belum
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        final Boolean isLogin = mPreferences.getBoolean(getString(R.string.pref_is_login_key), false);
+//        final Boolean isLogin = mPreferences.getBoolean(getString(R.string.pref_is_login_key), false);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent;
-//                if (user != null) {
-                if (isLogin) {
+                if (currentUser != null) {
+//                if (isLogin) {
                     intent = new Intent(getApplicationContext(), MainActivity.class);
                 } else {
                     intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -64,4 +67,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }, 3000);
     }
+
+
 }

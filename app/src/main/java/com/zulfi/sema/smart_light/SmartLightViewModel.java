@@ -41,7 +41,7 @@ public class SmartLightViewModel extends ViewModel {
 
     public SmartLightViewModel(){
         // Sensor
-        DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("RealTimeData");
+        DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("DataUpdateTerakhir");
         sumberACRef = sensorRef.child("SumberListrikAC");
         kwhRef = sensorRef.child("pzemValue");
         lamp1GetterRef = sensorRef.child("Lampu1");

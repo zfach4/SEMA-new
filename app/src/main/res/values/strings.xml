@@ -52,4 +52,5 @@
     <string name="sumber_listrik_ac">Sumber Listrik AC</string>
     <string name="watt">Watt</string>
     <string name="terakhir_update">Terakhir Update</string>
+    <string name="pref_uid_key">prefUID</string>
 </resources>

@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
-    tools:context=".smart_light.SmartLightFragment">
+    tools:context=".smart_light.SmartLightFragment"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,63 +25,88 @@
             android:layout_gravity="center"
             android:visibility="visible" />
 
-        <LinearLayout
-            android:id="@+id/content_view_lamp1"
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:visibility="gone">
+            android:layout_margin="8dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/grey_light">
 
-            <ImageButton
-                android:id="@+id/btn_light1"
+            <LinearLayout
+                android:id="@+id/content_view_lamp1"
                 android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:background="@null"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_light_off" />
-
-            <TextView
-                android:id="@+id/tv_light_state1"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="10dp"
-                android:text="@string/light_off_title1"
-                android:textAlignment="center"
-                android:textSize="18sp" />
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="8dp"
+                android:visibility="gone">
 
-        </LinearLayout>
+                <ImageButton
+                    android:id="@+id/btn_light1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_light_off" />
 
-        <LinearLayout
-            android:id="@+id/content_view_lamp2"
+                <TextView
+                    android:id="@+id/tv_light_state1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="10dp"
+                    android:text="@string/light_off_title1"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:visibility="gone">
+            android:layout_margin="8dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/grey_light">
 
-            <ImageButton
-                android:id="@+id/btn_light2"
+            <LinearLayout
+                android:id="@+id/content_view_lamp2"
                 android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:background="@null"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_light_off" />
-
-            <TextView
-                android:id="@+id/tv_light_state2"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="10dp"
-                android:text="@string/light_off_title2"
-                android:textAlignment="center"
-                android:textSize="18sp" />
+                android:layout_centerInParent="true"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:visibility="gone">
 
-        </LinearLayout>
+                <ImageButton
+                    android:id="@+id/btn_light2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_light_off" />
+
+                <TextView
+                    android:id="@+id/tv_light_state2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="10dp"
+                    android:text="@string/light_off_title2"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
 
         <TableLayout
             android:id="@+id/content_table_smart_light"
@@ -127,7 +154,8 @@
                 <TextView
                     style="@style/TextSpec.Unit"
                     android:gravity="start"
-                    android:text="@string/watt" />
+                    android:text="@string/watt"
+                    android:textColor="@color/black"/>
             </TableRow>
 
         </TableLayout>
