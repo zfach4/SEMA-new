@@ -125,9 +125,5 @@
             style="@style/TextSpec.Unit"
             android:gravity="start"
             android:text="" />
-
-
-
-
     </TableRow>
 </TableLayout>

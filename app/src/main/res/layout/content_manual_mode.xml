@@ -13,6 +13,7 @@
         <TextView
             android:text="@string/servo_angle_title"
             android:textSize="14sp"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -20,6 +21,8 @@
             android:id="@+id/tv_servo_angle"
             android:text="0"
             android:textSize="80sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,7 +74,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:weightSum="4"
+        android:weightSum="9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -81,20 +84,21 @@
         <EditText
             android:id="@+id/et_sudut_servo"
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_weight="5"
             android:layout_height="wrap_content"
             android:maxLength="3"
             android:hint="@string/masukkan_angka"
             android:inputType="number"/>
 
         <Space
-            android:layout_width="8dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btn_update_servo"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:layout_height="match_parent"
             android:text="@string/enter" />
     </LinearLayout>

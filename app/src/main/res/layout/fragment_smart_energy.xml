@@ -7,37 +7,50 @@
     android:orientation="vertical"
     android:background="@color/white">
 
-    <include
-        android:id="@+id/content_switch"
-        layout="@layout/content_mode_switch"
-        />
-
-    <Space
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="16dp"/>
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/pb_smart_energy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"/>
+            <include
+                android:id="@+id/content_switch"
+                layout="@layout/content_mode_switch"
+                />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp"/>
+
+            <ProgressBar
+                android:id="@+id/pb_smart_energy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"/>
 
 
-    <include
-        android:id="@+id/content_manual"
-        layout="@layout/content_manual_mode"
-        android:visibility="gone"/>
+            <include
+                android:id="@+id/content_manual"
+                layout="@layout/content_manual_mode"
+                android:visibility="gone"/>
 
-    <include
-        android:id="@+id/content_auto"
-        layout="@layout/content_automatic_mode"
-        android:visibility="gone"/>
+            <include
+                android:id="@+id/content_auto"
+                layout="@layout/content_automatic_mode"
+                android:visibility="gone"/>
 
-    <include
-        android:id="@+id/contont_table"
-        layout="@layout/content_table_smart_energy"
-        android:visibility="gone"/>
+            <include
+                android:id="@+id/contont_table"
+                layout="@layout/content_table_smart_energy"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
 
 </LinearLayout>
