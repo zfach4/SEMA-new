@@ -31,17 +31,21 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        MainActivity act = (MainActivity) getActivity();
+
 
         // tambah handler untuk btn_menu_smart_energy
         Button btnSmartEnergy = view.findViewById(R.id.btn_menu_smart_energy);
         btnSmartEnergy.setOnClickListener(v -> {
             changeFragment(new SmartEnergyFragment());
+            act.navigationView.setCheckedItem(R.id.nav_smart_energy);
         });
 
         // tambah handler untuk btn_menu_smart_light
         Button btnSmartLight = view.findViewById(R.id.btn_menu_smart_light);
         btnSmartLight.setOnClickListener(v -> {
             changeFragment(new SmartLightFragment());
+            act.navigationView.setCheckedItem(R.id.nav_smart_light);
         });
         return view;
     }
