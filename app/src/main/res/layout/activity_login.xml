@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:background="@color/white">
+    android:background="@color/yellowDashboard">
 
     <LinearLayout
         android:id="@+id/linear_logo"
@@ -16,9 +16,9 @@
         android:layout_marginTop="100dp">
 
         <ImageView
-            android:layout_width="100dp"
+            android:layout_width="500dp"
             android:layout_height="100dp"
-            android:src="@drawable/cute"
+            android:src="@drawable/sc1"
             android:layout_gravity="center"
             />
 
@@ -42,26 +42,40 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:padding="16dp"
-        android:layout_below="@id/linear_logo">
+        android:paddingRight="16dp"
+        android:layout_below="@id/linear_logo"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_margin="16dp"
             >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_email"/>
 
             <EditText
                 android:id="@+id/et_username"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="User Name"/>
+                android:hint="@string/gmail"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_password"/>
 
             <EditText
                 android:id="@+id/et_password"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"/>
 
             <Button

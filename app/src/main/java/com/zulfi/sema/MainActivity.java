@@ -114,15 +114,33 @@ public class MainActivity extends AppCompatActivity {
     private void settingUsersData(){
         String UID = mPreferences.getString(getString(R.string.pref_uid_key), "-");
         if(UID != "-"){
-            userRef = FirebaseDatabase.getInstance().getReference("Users").child(UID);
+            userRef = FirebaseDatabase.getInstance().getReference("Users");
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    // parsing nilai nama dari firebase ke tipe data String
-                    Users usersObject = snapshot.getValue(Users.class);
-                    // kasih nilai nama ke nama untuk dikirim ke SmartEnergyFragment
-                    tvName.setText(usersObject.getNama());
-                    tvTelp.setText(usersObject.getTelp());
+//                    // parsing nilai nama dari firebase ke tipe data String
+//                    Users usersObject = snapshot.getValue(Users.class);
+//                    // kasih nilai nama ke nama untuk dikirim ke SmartEnergyFragment
+//                    if (usersObject != null){
+//                        tvName.setText(usersObject.getNama());
+//                        tvTelp.setText(usersObject.getTelp());
+//                    } else {
+//                        tvName.setText("-");
+//                        tvTelp.setText("-");
+//                    }
+
+                    if (snapshot.hasChild(UID)){
+                        DataSnapshot child = snapshot.child(UID);
+                        //parsing data Users yang memiliki nilai UID menjadi objectUsers
+                        Users usersObject = child.getValue(Users.class);
+                        //setting text nama dan no telp sesui dengan field pada usersObject
+                        tvName.setText(usersObject.getNama());
+                        tvTelp.setText(usersObject.getTelp());
+                    } else {
+                        tvName.setText("-");
+                        tvTelp.setText("-");
+                    }
+
                 }
 
                 @Override

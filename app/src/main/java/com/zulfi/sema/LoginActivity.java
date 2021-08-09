@@ -64,13 +64,20 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // ambil data dari text view
                 email = et_username.getText().toString();
                 password = et_password.getText().toString();
 
-                // action
-                doLogin(email, password);
-
+                // validasi login
+                if (email.equals("")){
+                    et_username.setError("Email tidak boleh kosong");
+                } else if (password.equals("")){
+                    et_password.setError("Password tidak boleh kosong");
+                }
+                else{
+                    // action
+                    doLogin(email, password);
+                }
             }
         });
     }
@@ -110,6 +117,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Zulfi Firebase", "signInWithEmail:success");
+                            Toast.makeText(LoginActivity.this, "Login Berhasil.",
+                                    Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             saveUserLoginInfo(user.getEmail(), user.getDisplayName(), user.getUid());

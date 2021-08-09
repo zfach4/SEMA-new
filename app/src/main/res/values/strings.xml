@@ -53,4 +53,16 @@
     <string name="watt">Watt</string>
     <string name="terakhir_update">Terakhir Update</string>
     <string name="pref_uid_key">prefUID</string>
+    <string name="gmail">zulfifachrurrozi@gmail.com</string>
+    <string name="password">********</string>
+    <string name="tv_email">Email</string>
+    <string name="tv_password">Password</string>
+    <string name="guide">Hal-hal berikut yang perlu dilakukan secara berkala oleh pengguna :\n\n
+    \t1. Menjaga Panel Surya Tetap Bersih\n
+    \t2. Gunakan Air untuk membersihkan panel surya\n
+    \t3. Gunakan sikat dari bahan halus\n
+    \t4. Menyeka panel surya saat masih basah\n
+    \t5. Lakukan pada pagi atau sore hari\n
+    \t6. Memonitor kinerja sistem panel surya</string>
+    <string name="sentence_with_new_line_tag">This is the first sentence\nThis is the second scentence\nThis is the third sentence</string>
 </resources>
