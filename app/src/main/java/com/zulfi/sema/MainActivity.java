@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
+    public NavigationView navigationView;
 
     private TextView tvUsername;
 
@@ -78,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
         //setting tampilan toolbar
         setupActionBar();
 
-        //firebase inisialisasi
-//        mRef = new Firebase("https://smartcity-gbaz-ae18-default-rtdb.firebaseio.com/SmartCityAE18/Servo");
-
         // menu layout navigasi : muncul ketika burger icon ditekan
         drawer = findViewById(R.id.drawer_layout);
 
@@ -95,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
 
         //menu yang menampilkan list pada drawer : home, smart energy, dll
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         //mengisi profil username dll serta aksi ketika menuItem dipilih
         setupDrawerContent(navigationView);
 
@@ -216,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         ImageView imageView = (ImageView) headerView.findViewById(R.id.img_profile_photo);
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_profile_foreground));
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_account_circle));
 
         tvName = (TextView) headerView.findViewById(R.id.tv_name);
         tvTelp = (TextView) headerView.findViewById(R.id.tv_telp);
@@ -233,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        navigationView.setCheckedItem(R.id.nav_home);
     }
 
     public void selectDrawerItem(MenuItem menuItem) {

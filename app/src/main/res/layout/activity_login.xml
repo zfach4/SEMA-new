@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="500dp"
             android:layout_height="100dp"
-            android:src="@drawable/sc1"
+            android:src="@drawable/sc3"
             android:layout_gravity="center"
             />
 

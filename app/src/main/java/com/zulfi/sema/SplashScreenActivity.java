@@ -2,6 +2,7 @@ package com.zulfi.sema;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +42,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         // masih manual
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
 
     @Override
