@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:background="@color/yellowDashboard">
+    android:background="@color/yellowDashboard"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linear_logo"
@@ -26,12 +27,17 @@
             android:id="@+id/sema"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Smart Energy Monitoring App"
+            android:text="@string/welcome_to_smart_city"
             android:textSize="18sp"
+            android:textStyle="bold"
             android:layout_gravity="center"/>
 
 
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -63,7 +69,7 @@
                 android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/gmail"/>
+                android:hint="@string/gmail" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -76,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
 
             <Button
                 android:id="@+id/btn_login"
@@ -92,4 +98,4 @@
     </androidx.cardview.widget.CardView>
 
 
-</RelativeLayout>
+</LinearLayout>

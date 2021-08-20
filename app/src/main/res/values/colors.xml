@@ -14,6 +14,7 @@
     <color name="purpleAppBar">#5E059E</color>
     <color name="yellowDashboard">#F5D505</color>
 
-    <color name="purple_sc">#4B1769</color>
+    <color name="purple_sc_1">#4B1769</color>
+    <color name="purple_sc_2">#BE1EDA</color>
     <color name="grey_light">#D8A4A4A6</color>
 </resources>

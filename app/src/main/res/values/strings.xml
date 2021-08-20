@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SEMA</string>
+    <string name="app_name">SCOMA</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -65,4 +65,16 @@
     \t5. Lakukan pada pagi atau sore hari\n
     \t6. Memonitor kinerja sistem panel surya</string>
     <string name="sentence_with_new_line_tag">This is the first sentence\nThis is the second scentence\nThis is the third sentence</string>
+    <string name="this_aplication">
+        \t\tSCOMA adalah aplikasi yang bertujuan untuk Kontrol dan Monitoring Smart City
+        guna memudahkan pengguna dalam pemantauan dan pengambilan keputusan kapanpun dan dimanapun mereka berada.\n
+    </string>
+    <string name="version">Version. 1.01</string>
+    <string name="purpose">
+        \t\tAplikasi ini dibuat guna menyelesaikan Proyek Akhir kelompok Smart City yang beranggotakan:
+        Alfiana Cendani Putri, Bowo Mahatma, Gilang Alif Prihadi, dan Zulfi Fachrurrozi.\n\n
+        \t\tAplikasi ini masih dapat dikembangkan menjadi lebih baik kedepannya.
+    </string>
+    <string name="welcome_to_smart_city">Welcome to Smart City</string>
+    <string name="scoma">SCOMA</string>
 </resources>

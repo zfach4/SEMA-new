@@ -275,7 +275,12 @@ public class SmartEnergyFragment extends Fragment {
                 tvAccuVoltage.setText(s);
                 int batteryPercentage = (int) Math.round((Double.parseDouble(s) * 100) / 12);
                 chartBatteryPercentage.setProgress(batteryPercentage);
-                tvBatteryPercentage.setText(batteryPercentage + "%");
+                if (batteryPercentage > 100) {
+                    tvBatteryPercentage.setText("100%");
+                } else {
+                    tvBatteryPercentage.setText(batteryPercentage + "%");
+                }
+
             }
         });
 
