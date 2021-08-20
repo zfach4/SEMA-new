@@ -5,22 +5,22 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class Users {
-    String nama;
+    String name;
     String telp;
 
     public Users(){}
 
-    public Users(String nama, String telp) {
-        this.nama = nama;
+    public Users(String name, String telp) {
+        this.name = name;
         this.telp = telp;
     }
 
-    public String getNama() {
-        return nama;
+    public String getName() {
+        return name;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTelp() {

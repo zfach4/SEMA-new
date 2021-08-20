@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SEMA"
+            android:text="@string/scoma"
             android:textAlignment="center"
             android:layout_centerHorizontal="true"
             android:textSize="50sp"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="-- Smart Energy Monitoring App --"
+            android:text="-- Smart City on Mobile Apps --"
             android:textAlignment="center"
             android:layout_centerHorizontal="true"
             android:textSize="20sp"

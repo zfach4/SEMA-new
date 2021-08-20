@@ -162,7 +162,64 @@
                         android:text="@string/watt"
                         android:textColor="@color/black"/>
                 </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        style="@style/TextSpec.Field"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextSpec.Value"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextSpec.Unit"
+                        android:gravity="start"
+                        android:text="" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        style="@style/TextSpec.Field"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextSpec.Value"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextSpec.Unit"
+                        android:gravity="start"
+                        android:text="" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        style="@style/TextSpec.Field"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextSpec.Value"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextSpec.Unit"
+                        android:gravity="start"
+                        android:text="" />
+                </TableRow>
             </TableLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -25,9 +26,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -39,8 +37,6 @@ import com.zulfi.sema.about.AboutFragment;
 import com.zulfi.sema.home.HomeFragment;
 import com.zulfi.sema.smart_energy.SmartEnergyFragment;
 import com.zulfi.sema.smart_light.SmartLightFragment;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         //menyimpan kondisi logout
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -132,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                         //parsing data Users yang memiliki nilai UID menjadi objectUsers
                         Users usersObject = child.getValue(Users.class);
                         //setting text nama dan no telp sesui dengan field pada usersObject
-                        tvName.setText(usersObject.getNama());
+                        tvName.setText(usersObject.getName());
                         tvTelp.setText(usersObject.getTelp());
                     } else {
                         tvName.setText("-");
