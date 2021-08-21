@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -99,17 +102,33 @@ public class SmartEnergyFragment extends Fragment {
         tvServoAngle = manualContentView.findViewById(R.id.tv_servo_angle);
         tvConfirm = manualContentView.findViewById(R.id.tv_confirm);
         etServo = manualContentView.findViewById(R.id.et_sudut_servo);
+        // membuat filter untuk minimum dan maximum input user
+        etServo.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "180")});
+        // membuat listener untuk ketikan pengguna
+        etServo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // validasi isi text
+                Boolean isTextNotEmpty = (s.length() != 0);
+                btnUpdateServo.setEnabled(isTextNotEmpty);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // hapus 0 di awal, kecuali kalau text dia cuma 0
+                // cth: "09" -> "9", "000000" -> "0"
+                String newText = s.toString();
+                if (newText.startsWith("0") && newText.length() > 1) {
+                    etServo.setText(newText.substring(1));
+                }
+            }
+        });
+
         btnUpdateServo = manualContentView.findViewById(R.id.btn_update_servo);
 
-//        Button btnCW = manualContentView.findViewById(R.id.btn_cw);
-//        btnCW.setOnClickListener(v -> {
-//            changeServoAngleClockwise();
-//        });
-//
-//        Button btnCCW = manualContentView.findViewById(R.id.btn_ccw);
-//        btnCCW.setOnClickListener(v -> {
-//            changeServoAngleCounterClockwise();
-//        });
         View contentMode = view.findViewById(R.id.content_switch);
         tvMode = contentMode.findViewById(R.id.tv_mode_state);
         switchMode = contentMode.findViewById(R.id.switch_mode);
@@ -174,47 +193,55 @@ public class SmartEnergyFragment extends Fragment {
         });
 
         btnUpdateServo.setOnClickListener(v -> {
-            // disable Button dan EditText
-            btnUpdateServo.setEnabled(false);
-            etServo.setEnabled(false);
-            String oldServo = tvServoAngle.getText().toString();
-            tvServoAngle.setText("-");
+            // memeriksa apakah nilai yang akan dikirim sama dengan yang sudah ada
+            int currentServo = (int) Double.parseDouble(tvServoAngle.getText().toString());
+            int newServoAngle = (int) Double.parseDouble(etServo.getText().toString());
+            if (currentServo == newServoAngle) {
+                Toast.makeText(getActivity(), "Nilai sudut servo yang dikirim harus berbeda", Toast.LENGTH_LONG).show();
+                Log.d("Update Sudut Servo", "Gagal memperbaharui sudut Servo. Data yang dikirim sudah sama");
+            } else {
+                // disable Button dan EditText
+                btnUpdateServo.setEnabled(false);
+                etServo.setEnabled(false);
+                String oldServo = tvServoAngle.getText().toString();
+                tvServoAngle.setText("-");
 
-            //mengupdate sudut servo
-            String oldConfirm = tvConfirm.getText().toString();
-            String newServo = etServo.getText().toString();
-            tvConfirm.setText(R.string.data_confirm);
-            Log.d("Zulfi Fachrurrozi", "Mengirim ke Firebase nilai Sudut Servo : " + newServo);
-            mViewModel.updateSudutServo(newServo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
+                //mengupdate sudut servo
+                String oldConfirm = tvConfirm.getText().toString();
+                String newServo = etServo.getText().toString();
+                tvConfirm.setText(R.string.data_confirm);
+                Log.d("Zulfi Fachrurrozi", "Mengirim ke Firebase nilai Sudut Servo : " + newServo);
+                mViewModel.updateSudutServo(newServo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
-                    Log.d("Update Sudut Servo", "Gagal memperbaharui sudut Servo");
-                    tvConfirm.setText(oldConfirm);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("Update Sudut Servo", "Gagal memperbaharui sudut Servo");
+                        tvConfirm.setText(oldConfirm);
 
-                    btnUpdateServo.setEnabled(true);
-                    etServo.setEnabled(true);
-                    tvServoAngle.setText(oldServo);
-                }
-            });
-            //mengupdate confirm text
-            mViewModel.updateConfirm().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
+                        btnUpdateServo.setEnabled(true);
+                        etServo.setEnabled(true);
+                        tvServoAngle.setText(oldServo);
+                    }
+                });
+                //mengupdate confirm text
+                mViewModel.updateConfirm().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
-                    Log.d("Update Confirm", "Gagal memperbaharui Confirm");
-                }
-            });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("Update Confirm", "Gagal memperbaharui Confirm");
+                    }
+                });
+            }
         });
 
     }
@@ -235,21 +262,6 @@ public class SmartEnergyFragment extends Fragment {
         }
         tableContentView.setVisibility(View.VISIBLE);
         progress.setVisibility(View.GONE);
-    }
-
-    private void changeServoAngleClockwise() {
-        if (servoAngle > 0) {
-            servoAngle -= 1;
-        }
-
-        tvServoAngle.setText(servoAngle + "");
-    }
-
-    private void changeServoAngleCounterClockwise() {
-        if (servoAngle < 180) {
-            servoAngle +=1;
-        }
-        tvServoAngle.setText(servoAngle + "");
     }
 
     // load data dari viewmodel
@@ -307,8 +319,6 @@ public class SmartEnergyFragment extends Fragment {
                 tvAzimuth.setText(s);
             }
         });
-
-
 
         mViewModel.getPosisiServo().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
