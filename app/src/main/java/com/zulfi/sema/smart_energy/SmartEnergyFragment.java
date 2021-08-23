@@ -113,7 +113,13 @@ public class SmartEnergyFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // validasi isi text
                 Boolean isTextNotEmpty = (s.length() != 0);
-                btnUpdateServo.setEnabled(isTextNotEmpty);
+                Boolean isValueDifferent = false;
+                if (isTextNotEmpty) {
+                    int currentServo = (int) Double.parseDouble(tvServoAngle.getText().toString());
+                    int newServoAngle = (int) Double.parseDouble(etServo.getText().toString());
+                    isValueDifferent = (currentServo != newServoAngle);
+                }
+                btnUpdateServo.setEnabled(isTextNotEmpty && isValueDifferent);
             }
 
             @Override
