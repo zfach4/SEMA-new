@@ -66,15 +66,15 @@
     \t6. Memonitor kinerja sistem panel surya</string>
     <string name="sentence_with_new_line_tag">This is the first sentence\nThis is the second scentence\nThis is the third sentence</string>
     <string name="this_aplication">
-        \t\tSCOMA adalah aplikasi yang bertujuan untuk Kontrol dan Monitoring Smart City
+        \t\tSCOMA adalah aplikasi yang bertujuan untuk Kontrol dan Pemantauan Solar Tracker
         guna memudahkan pengguna dalam pemantauan dan pengambilan keputusan kapanpun dan dimanapun mereka berada.\n
     </string>
-    <string name="version">Version. 1.01</string>
+    <string name="version">Version 1.0.0</string>
     <string name="purpose">
-        \t\tAplikasi ini dibuat guna menyelesaikan Proyek Akhir kelompok Smart City yang beranggotakan:
-        Alfiana Cendani Putri, Bowo Mahatma, Gilang Alif Prihadi, dan Zulfi Fachrurrozi.\n\n
+        \t\tAplikasi ini dibuat guna menyelesaikan Proyek Akhir kelompok yang beranggotakan:
+        \n\t1. Alfiana Cendani Putri, \n\t2. Bowo Mahatma, \n\t3. Gilang Alif Prihadi, dan \n\t4. Zulfi Fachrurrozi.\n\n
         \t\tAplikasi ini masih dapat dikembangkan menjadi lebih baik kedepannya.
     </string>
-    <string name="welcome_to_smart_city">Welcome to Smart City</string>
+    <string name="welcome_to_smart_city">Welcome to SCOMA</string>
     <string name="scoma">SCOMA</string>
 </resources>
