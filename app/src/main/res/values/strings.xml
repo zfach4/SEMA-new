@@ -8,8 +8,8 @@
 
     <!-- menu drawer -->
     <string name="menu_home">Home</string>
-    <string name="menu_smart_energy">Smart Energy</string>
-    <string name="menu_smart_light">Smart Light</string>
+    <string name="menu_smart_energy">Solar Tracker</string>
+    <string name="menu_smart_light">Lampu Pintar</string>
     <string name="menu_about">About</string>
     <string name="menu_logout">Logout</string>
 
